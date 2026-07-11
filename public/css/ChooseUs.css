@@ -1,0 +1,157 @@
+
+    .why_choose_us_area {
+        padding-bottom: 70px;
+    }
+    
+    .creative-accordion-area {
+        position: relative;
+        min-height: 600px;
+    }
+    
+    .single_service {
+        background-color: #f1f1f1;
+        height: 250px;
+        margin: 40px 0 30px;
+        position: relative;
+        width: 100%;
+        z-index: 1;
+    }
+    
+    .single_service_img_area {
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        padding: 15px 10px;
+        z-index: 5;
+        -webkit-transition-duration: 700ms;
+        transition-duration: 700ms;
+    }
+    
+    .single_service_img_area:hover .service_title,
+    .single_service_img > span:hover,
+    .single_service_img_area:hover .single_service_img > span {
+        color: #fff;
+    }
+    
+    .why_choose_us_area .col-md-3:nth-child(odd) .single_service_img_area:hover {
+        background-color: #3fc8db;
+    }
+    
+    .why_choose_us_area .col-md-3:nth-child(even) .single_service_img_area:hover {
+        background-color: #e74c3c;
+    }
+    
+    .border {
+        border: 2px solid #b2e9f1;
+        height: 90%;
+        left: 5%;
+        position: absolute;
+        top: 5%;
+        width: 90%;
+        z-index: 9;
+        right: 5%;
+        bottom: 5%;
+    }
+    
+    .single_service_img1 {
+        height: 100%;
+        background:url(../images/Choose1.png) no-repeat center center!important;
+        position: absolute;
+        text-align: center;
+        top: 6%;
+        width: 100%;
+        z-index: 9;
+    }
+
+    .single_service_img2 {
+        height: 100%;
+        background:url(../images/Choose2.png) no-repeat center center!important;
+        position: absolute;
+        text-align: center;
+        top: 6%;
+        width: 100%;
+        z-index: 9;
+    }
+
+    .single_service_img3 {
+        height: 100%;
+        background:url(../images/Choose3.png) no-repeat center center!important;
+        position: absolute;
+        text-align: center;
+        top: 6%;
+        width: 100%;
+        z-index: 9;
+    }
+
+    .single_service_img4 {
+        height: 100%;
+        background:url(../images/Choose4.png) no-repeat center center!important;
+        position: absolute;
+        text-align: center;
+        top: 6%;
+        width: 100%;
+        z-index: 9;
+    }
+    
+    /*.single_service_img > span {
+        color: #2c3e50;
+        font-size: 65px;
+        -webkit-transition-duration: 700ms;
+        transition-duration: 700ms;
+    }*/
+
+    
+    .service_title {
+        color: #2c3e50;
+        height: 100%;
+        position: absolute;
+        text-align: center;
+        text-transform: uppercase;
+        top: 5%;
+        width: 100%;
+        z-index: 9;
+        -webkit-transition-duration: 700ms;
+        transition-duration: 700ms;
+    }
+    
+    .service_title > h5 {
+        letter-spacing: 1px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+    }
+
+    .WhyChoosecolor {
+        color:#000;
+    }
+    .WhyChoosecolor:hover {
+        color:#fff;
+    }
+
+
+   /*    Why Choose Us Area CSS */
+    
+    .why_choose_us_area.home2 .col-md-3:nth-child(odd) .single_service_img_area:hover {
+        background-color: #3498db;
+        
+    }
+    
+    .why_choose_us_area.home2 .col-md-3:nth-child(even) .single_service_img_area:hover {
+        background-color: #f39c12;
+    }
+
+
+      .section_padding_100 {
+        padding : 2em 0em 1em 0em;
+
+    }
+    
+    .section_padding_60 {
+        padding: 60px 0;
+    }
+    
+    .section_padding_100_50 {
+        padding-top: 30px;
+        padding-bottom: 50px;
+    }
+
+

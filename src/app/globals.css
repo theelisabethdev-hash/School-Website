@@ -1,0 +1,20 @@
+/*
+  The Elisabeth Gauba School — global styles.
+
+  The site's original look is preserved by loading the legacy stylesheets
+  (Bootstrap, style.css, MainMenu.css, News.css, ChooseUs.css, owl carousel,
+  font-awesome) directly from /public/css via <link> tags in layout.tsx.
+  We intentionally do NOT use Tailwind here so the original design renders
+  exactly as it did on the legacy site.
+
+  This file only holds tiny, non-visual helpers.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,33 @@
+# Dependency directories (installed via `npm install`)
+node_modules/
+functions/node_modules/
+
+# Next.js build output and local cache
+.next/
+out/
+build/
+tsconfig.tsbuildinfo
+
+# Local Environment variables & secrets (specific to your machine)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Large media/local upload folders (not tracked in Git)
+public/uploads/
+
+# Local workspace scratchpad/audit folders
+scratchpad/
+
+# Firebase local emulator logs and debug files
+.firebase/
+firebase-debug.log
+ui-debug.log
+*-debug.log
+
+# System/IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
