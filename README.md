@@ -2,8 +2,8 @@
 
 Codebase for the official website of **The Elisabeth Gauba School (Shiv Niketan)**, a pre-primary and primary school located near President's Estate / Gole Market, New Delhi.
 
-- 🌐 **Live site:** https://www.theelisabethgaubaschool.com
-- 🖥️ **Local dev:** http://localhost:3000
+- 🌐 **Public Website:** https://the-elisabeth-gauba-scho-534b5.web.app
+- 🖥️ **Admin panel:** https://the-elisabeth-gauba-scho-534b5.web.app/admin
 
 ---
 
@@ -124,9 +124,6 @@ php_website/                        ← project root (clone this folder)
 ├── eslint.config.mjs               ← ESLint configuration
 ├── package.json                    ← Frontend dependencies & scripts
 └── .gitignore
-```
-
-> **Note on assets:** Large media folders (`public/uploads/`, `public/Gallary/`, `public/images/`) are **not tracked in git** to keep the repository size small. They live on each developer's machine and are served fine by `npm run dev`. Before deploying to production, set up an asset strategy (Firebase Storage, a CDN, or Git LFS).
 
 ---
 
@@ -193,44 +190,9 @@ NEXT_PUBLIC_GA4_ID=G-XXXXXXXXXX
 npm run dev
 ```
 
-Open **http://localhost:3000** in your browser. Hot-reload is enabled — changes to source files reflect instantly.
+Public Website **http://localhost:3000** in your browser. Hot-reload is enabled — changes to source files reflect instantly.
 
----
-
-### Step 5 — *(Optional)* Start the Firebase emulator
-
-Run this **in addition to** `npm run dev` if you want to test live Firestore data, admin features, or the backend API locally.
-
-```bash
-# Install backend dependencies first (one-time)
-cd functions && npm install && cd ..
-
-# Start the emulator suite
-firebase emulators:start --only hosting,functions
-
-# On Windows, if the above fails:
-firebase.cmd emulators:start --only hosting,functions
-```
-
-| URL | Service |
-|---|---|
-| http://localhost:5000 | Legacy static site (Firebase Hosting) |
-| http://localhost:5000/admin/ | Admin panel |
-| http://localhost:4000 | Firebase Emulator UI |
-| http://localhost:5001 | Cloud Functions / REST API |
-| http://localhost:8080 | Firestore emulator |
-| http://localhost:9199 | Storage emulator |
-
----
-
-## 📦 Other Useful Scripts
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start Next.js development server with hot-reload |
-| `npm run build` | Build optimised production bundle |
-| `npm run start` | Serve the production build locally |
-| `npm run lint` | Run ESLint on the codebase |
+Admin Panel **http://localhost:3000/admin**
 
 ---
 
@@ -239,26 +201,3 @@ firebase.cmd emulators:start --only hosting,functions
 ```bash
 # Deploy everything (Hosting + Functions + Rules)
 firebase deploy
-
-# Deploy only Firebase Hosting
-firebase deploy --only hosting
-
-# Deploy only Cloud Functions
-firebase deploy --only functions
-```
-
-Frontend deployment (Vercel or Firebase Hosting with Next.js support) is decided at cutover.
-
----
-
-## 🤝 Collaborator Access
-
-If you were added as a collaborator on the private GitHub repository:
-
-1. Accept the GitHub invitation from your email.
-2. Clone the repository using the command in **Step 1** above.
-3. Ask the project owner to share the `.env.local` file contents with you (it contains secret keys and is never committed to git).
-
----
-
-*Built with ❤️ for The Elisabeth Gauba School (Shiv Niketan), New Delhi.*
