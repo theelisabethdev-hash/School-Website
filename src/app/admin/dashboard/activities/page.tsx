@@ -54,6 +54,7 @@ export default function ActivitiesManagerPage() {
   const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
   const [selectedYear, setSelectedYear] = useState(getCurrentYear());
   const [files, setFiles] = useState<FileList | null>(null);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
 
   useEffect(() => {
     fetchActivities();
@@ -81,6 +82,7 @@ export default function ActivitiesManagerPage() {
     setSelectedMonth(getCurrentMonth());
     setSelectedYear(getCurrentYear());
     setFiles(null);
+    setExistingImages([]);
     setShowForm(true);
     setError("");
     setSuccess("");
@@ -111,6 +113,7 @@ export default function ActivitiesManagerPage() {
 
     setContent(activity.content || "");
     setFiles(null);
+    setExistingImages(activity.images || []);
     setShowForm(true);
     setError("");
     setSuccess("");
@@ -145,6 +148,9 @@ export default function ActivitiesManagerPage() {
       const combinedTitle = `${title.trim()} (${selectedMonth} ${selectedYear})`;
       formData.append("title", combinedTitle);
       formData.append("content", content);
+      if (editActivity) {
+        formData.append("existingImages", JSON.stringify(existingImages));
+      }
 
       if (files && files.length > 0) {
         for (let i = 0; i < files.length; i++) {
@@ -380,18 +386,45 @@ export default function ActivitiesManagerPage() {
                   </div>
                 </div>
 
-                {editActivity && editActivity.images && editActivity.images.length > 0 && (
+                {editActivity && existingImages && existingImages.length > 0 && (
                   <div style={{ marginBottom: "15px" }}>
-                    <label className="control-label" style={{ fontWeight: "bold" }}>Existing Images ({editActivity.images.length})</label>
-                    <div style={{ display: "flex", gap: "8px", overflowX: "auto", background: "#f5f5f5", padding: "10px", border: "1px solid #ddd", borderRadius: "4px" }}>
-                      {editActivity.images.map((img, idx) => (
-                        <div key={idx} style={{ flexShrink: 0, width: "60px", height: "60px", background: "#eee", borderRadius: "4px", overflow: "hidden" }}>
-                          <img src={img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <label className="control-label" style={{ fontWeight: "bold" }}>Existing Images ({existingImages.length})</label>
+                    <div style={{ display: "flex", gap: "10px", overflowX: "auto", background: "#f5f5f5", padding: "12px", border: "1px solid #ddd", borderRadius: "4px" }}>
+                      {existingImages.map((img, idx) => (
+                        <div key={idx} style={{ position: "relative", flexShrink: 0, width: "60px", height: "60px", background: "#eee", borderRadius: "4px", overflow: "visible" }}>
+                          <img src={img} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "4px" }} />
+                          <button
+                            type="button"
+                            onClick={() => setExistingImages(prev => prev.filter((_, i) => i !== idx))}
+                            style={{
+                              position: "absolute",
+                              top: "-6px",
+                              right: "-6px",
+                              background: "#d9534f",
+                              color: "#fff",
+                              border: "none",
+                              borderRadius: "50%",
+                              width: "18px",
+                              height: "18px",
+                              fontSize: "12px",
+                              lineHeight: "18px",
+                              textAlign: "center",
+                              cursor: "pointer",
+                              padding: 0,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              boxShadow: "0 1px 3px rgba(0,0,0,0.3)"
+                            }}
+                            title="Delete Image"
+                          >
+                            &times;
+                          </button>
                         </div>
                       ))}
                     </div>
-                    <p className="help-block" style={{ fontSize: "11px", color: "#666" }}>
-                      Note: Uploading new files below will completely replace all existing images for this activity.
+                    <p className="help-block" style={{ fontSize: "11px", color: "#666", marginTop: "5px" }}>
+                      Note: Click the red cross on an image to delete it. Uploading new files below will add them to the remaining images.
                     </p>
                   </div>
                 )}

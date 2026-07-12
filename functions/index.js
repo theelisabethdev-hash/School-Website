@@ -923,13 +923,32 @@ app.put('/admin/activities/:id', upload.array('images', 10), async (req, res) =>
       content: data.content || ''
     };
     
+    let existingImages = [];
+    let hasExistingImagesField = false;
+    if (data.existingImages !== undefined) {
+      hasExistingImagesField = true;
+      try {
+        existingImages = JSON.parse(data.existingImages);
+        if (!Array.isArray(existingImages)) {
+          existingImages = [existingImages];
+        }
+      } catch (e) {
+        existingImages = Array.isArray(data.existingImages) ? data.existingImages : [data.existingImages].filter(Boolean);
+      }
+    }
+    
+    const newImageUrls = [];
     if (files.length > 0) {
-      const imageUrls = [];
       for (const file of files) {
         const url = await uploadToStorage(file, 'activities');
-        imageUrls.push(url);
+        newImageUrls.push(url);
       }
-      updateData.images = imageUrls;
+    }
+    
+    if (hasExistingImagesField) {
+      updateData.images = [...existingImages, ...newImageUrls];
+    } else if (files.length > 0) {
+      updateData.images = newImageUrls;
     }
     
     await db.collection('activities').doc(id).update(updateData);
@@ -990,13 +1009,32 @@ app.put('/admin/cocurricular/:id', upload.array('images', 10), async (req, res) 
       order: parseInt(data.order || '0')
     };
     
+    let existingImages = [];
+    let hasExistingImagesField = false;
+    if (data.existingImages !== undefined) {
+      hasExistingImagesField = true;
+      try {
+        existingImages = JSON.parse(data.existingImages);
+        if (!Array.isArray(existingImages)) {
+          existingImages = [existingImages];
+        }
+      } catch (e) {
+        existingImages = Array.isArray(data.existingImages) ? data.existingImages : [data.existingImages].filter(Boolean);
+      }
+    }
+    
+    const newImageUrls = [];
     if (files.length > 0) {
-      const imageUrls = [];
       for (const file of files) {
         const url = await uploadToStorage(file, 'cocurricular');
-        imageUrls.push(url);
+        newImageUrls.push(url);
       }
-      updateData.images = imageUrls;
+    }
+    
+    if (hasExistingImagesField) {
+      updateData.images = [...existingImages, ...newImageUrls];
+    } else if (files.length > 0) {
+      updateData.images = newImageUrls;
     }
     
     await db.collection('cocurricular').doc(id).update(updateData);
@@ -1057,13 +1095,32 @@ app.put('/admin/facilities/:id', upload.array('images', 10), async (req, res) =>
       order: parseInt(data.order || '0')
     };
     
+    let existingImages = [];
+    let hasExistingImagesField = false;
+    if (data.existingImages !== undefined) {
+      hasExistingImagesField = true;
+      try {
+        existingImages = JSON.parse(data.existingImages);
+        if (!Array.isArray(existingImages)) {
+          existingImages = [existingImages];
+        }
+      } catch (e) {
+        existingImages = Array.isArray(data.existingImages) ? data.existingImages : [data.existingImages].filter(Boolean);
+      }
+    }
+    
+    const newImageUrls = [];
     if (files.length > 0) {
-      const imageUrls = [];
       for (const file of files) {
         const url = await uploadToStorage(file, 'facilities');
-        imageUrls.push(url);
+        newImageUrls.push(url);
       }
-      updateData.images = imageUrls;
+    }
+    
+    if (hasExistingImagesField) {
+      updateData.images = [...existingImages, ...newImageUrls];
+    } else if (files.length > 0) {
+      updateData.images = newImageUrls;
     }
     
     await db.collection('facilities').doc(id).update(updateData);

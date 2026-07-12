@@ -284,7 +284,7 @@ function FacilityRow({ item, isEven }: { item: FacilitiesItem; isEven: boolean }
   };
 
   return (
-    <div className={`facility-row ${isEven ? "" : "reverse"}`}>
+    <div className="facility-row">
       <div className="facility-info">
         <h3 className="facility-title">{item.title}</h3>
         <p className="facility-content">{item.content}</p>
