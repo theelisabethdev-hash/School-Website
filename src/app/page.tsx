@@ -115,7 +115,7 @@ export default async function HomePage() {
             <div className="row">
               <div className="col-md-8">
                 <div className="wthree-heading">
-                  <h2 className="welcome_header">Welcome to The Elisabeth Gauba School</h2>
+                  <h1 className="welcome_header">Welcome to The Elisabeth Gauba School</h1>
                 </div>
                 <p className="Main_header three">
                   The School is a living example of the dedication and hard work of Mrs. Gauba who devoted her whole life to the cause of children’s education.
@@ -184,7 +184,7 @@ export default async function HomePage() {
                 </p>
               </div>
               <div className="col-md-2">
-                <img src="/images/Aunty2.jpg" alt=" " className="img-thumbnail" />
+                <img src="/images/Aunty2.jpg" alt="Mrs. Elisabeth Gauba, founder of The Elisabeth Gauba School" className="img-thumbnail" />
               </div>
             </div>
             <div className="clearfix"></div>

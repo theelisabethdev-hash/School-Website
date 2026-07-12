@@ -23,7 +23,6 @@ export const metadata: Metadata = {
  * Served straight from /public/css so the design renders identically.
  */
 const LEGACY_CSS = [
-  "/css/bootstrap.css",
   "/css/bootstrap.min.css",
   "/css/font-awesome.css",
   "/css/owl.theme.css",
@@ -41,8 +40,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Original web fonts */}
         <link
           href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i"
           rel="stylesheet"

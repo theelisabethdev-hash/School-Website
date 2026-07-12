@@ -15,6 +15,20 @@ const nextConfig: NextConfig = {
   // Pin the workspace root — a stray lockfile in the home dir otherwise
   // makes Next infer the wrong root.
   turbopack: { root: __dirname },
+  poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "geolocation=(), camera=(), microphone=()" },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       ...legacyRedirects,

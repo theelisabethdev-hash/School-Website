@@ -15,7 +15,7 @@ export const site = {
   // Firebase Functions API base. Empty string = same-origin /api (production).
   // For local emulator, set NEXT_PUBLIC_API_BASE to the functions URL.
   contact: {
-    address: "Entry from Gate No-9, Kali Bari Lane, New Delhi",
+    address: "Sector-II, DIZ Area, Kali Bari Marg (Entry from Gate No-9, Kali Bari Lane)",
     email: "shivniketan1@rediffmail.com",
     // [0] matches the number shown on the Google Business Profile — keep it
     // first so JSON-LD stays consistent with the GBP listing (NAP match).

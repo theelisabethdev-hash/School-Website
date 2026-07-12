@@ -23,7 +23,7 @@ export default function PageShell({
             <div className="row">
               <div className="col-md-12">
                 <div className="wthree-heading">
-                  <h2 className="Main_header">{title}</h2>
+                  <h1 className="Main_header">{title}</h1>
                 </div>
               </div>
             </div>

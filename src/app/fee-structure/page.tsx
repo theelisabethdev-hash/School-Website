@@ -1,4 +1,6 @@
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, feeFaqs, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { site } from "@/lib/site";
+import FaqSection from "@/components/FaqSection";
 import html from "@/content/fee-structure";
 
 export const metadata = pageMetadata("/fee-structure");
@@ -8,10 +10,27 @@ export const metadata = pageMetadata("/fee-structure");
 export default function Page() {
   return (
     <div id="body">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", url: `${site.url}/` },
+              { name: "Admissions", url: `${site.url}/admissions` },
+              { name: "Fee Structure & Payment", url: `${site.url}/fee-structure` },
+            ])
+          ),
+        }}
+      />
       <section
         className="content-wrapper main-content clear-fix"
         dangerouslySetInnerHTML={{ __html: html }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(feeFaqs)) }}
+      />
+      <FaqSection items={feeFaqs} />
     </div>
   );
 }

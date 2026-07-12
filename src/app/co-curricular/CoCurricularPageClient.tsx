@@ -267,9 +267,14 @@ export default function CoCurricularPageClient({ items }: Props) {
 
 
 
+      <div className="hero-header">
+        <h1>Co-Curricular Activities</h1>
+        <p>Sports, arts, music and co-curricular programmes that build well-rounded, confident children.</p>
+      </div>
+
       <div className="activity-list">
-        {items.map((item, index) => (
-          <ActivityRow key={item.id} item={item} isEven={index % 2 === 0} />
+        {items.map((item) => (
+          <ActivityRow key={item.id} item={item} isEven={true} />
         ))}
       </div>
     </div>

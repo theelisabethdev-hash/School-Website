@@ -12,7 +12,7 @@ export default function ContactPage() {
             <div className="row">
               <div className="col-md-6">
                 <div className="wthree-heading">
-                  <h2 className="Main_header">Contact Us</h2>
+                  <h1 className="Main_header">Contact Us</h1>
                 </div>
                 <div className="bs-docs-example">
                   <table className="table">

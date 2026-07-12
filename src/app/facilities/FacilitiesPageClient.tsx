@@ -251,6 +251,11 @@ export default function FacilitiesPageClient({ items }: Props) {
         }
       `}} />
 
+      <div className="hero-header">
+        <h1>Facilities &amp; Infrastructure</h1>
+        <p>A safe, well-equipped campus with a computer lab, library, infirmary, kitchen and playground.</p>
+      </div>
+
       <div className="facility-list">
         {items.map((item, index) => (
           <FacilityRow key={item.id} item={item} isEven={index % 2 === 0} />

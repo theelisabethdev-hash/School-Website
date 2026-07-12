@@ -208,7 +208,7 @@ export default function SchoolTimingClient({ timing }: Props) {
           <i className="fa fa-clock-o" aria-hidden="true"></i>
         </div>
         <div className="st-schedule-text">
-          <h2>Regular School Hours</h2>
+          <h1>Regular School Hours</h1>
           <p>{timing.mainSchedule}</p>
         </div>
       </div>

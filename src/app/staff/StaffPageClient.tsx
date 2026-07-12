@@ -579,6 +579,10 @@ export default function StaffPageClient({ staff, carousel }: Props) {
 
 
 
+      <div className="wthree-heading" style={{ textAlign: "center", marginBottom: "20px" }}>
+        <h1 className="Main_header">Our Teaching Staff</h1>
+      </div>
+
       {/* Top Panel: Administration grid and Slideshow */}
       <div className="top-panel-grid">
         {/* Administration Cards */}
