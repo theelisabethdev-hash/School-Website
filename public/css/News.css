@@ -1,4 +1,4 @@
-﻿
+
 @charset "utf-8";
 /* CSS Document */
 
@@ -28,6 +28,13 @@
     border-top-right-radius: 15px;
     color: #fff;
     text-align: center;
+    transition: background 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.ideaboxNews-heading:hover {
+    background: #173b93;
+    opacity: 0.95;
+    color: #fff;
 }
 
 .ideaboxNews {
@@ -370,4 +377,33 @@
 
 .tt-b-month {
     text-transform: uppercase;
+}
+
+/* Custom vertical scrolling marquee for New & Noteworthy */
+.notices-marquee-container {
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+.notices-marquee-content {
+    display: flex;
+    flex-direction: column;
+    animation: notices-vertical-scroll 30s linear infinite;
+}
+
+/* Pause scroll on hover to let users read or click notices */
+.notices-marquee-container:hover .notices-marquee-content {
+    animation-play-state: paused;
+}
+
+@keyframes notices-vertical-scroll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-50%);
+    }
 }

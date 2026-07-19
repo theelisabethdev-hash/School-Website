@@ -132,16 +132,43 @@ export default async function HomePage() {
               </div>
               <div className="col-md-4">
                 <div className="ideaboxNewsMain" style={{ height: "330px", overflow: "hidden" }}>
-                  <div className="ideaboxNews-heading"><b>New &amp; Noteworthy</b></div>
-                  <div id="home_notice">
+                  <a href="/notices" style={{ textDecoration: "none", display: "block" }}>
+                    <div className="ideaboxNews-heading" style={{ cursor: "pointer" }}>
+                      <b>New &amp; Noteworthy</b>
+                    </div>
+                  </a>
+                  <div id="home_notice" className={news.length > 3 ? "notices-marquee-container" : ""}>
                     {news.length === 0 ? (
                       <p style={{ padding: "10px" }}>No notices at the moment.</p>
+                    ) : news.length > 3 ? (
+                      <div className="notices-marquee-content">
+                        <ul style={{ listStyle: "none", padding: "10px 15px", margin: 0 }}>
+                          {news.slice(0, 15).map((n) => (
+                            <li key={n.id} style={{ marginBottom: "12px", lineHeight: "1.4" }}>
+                              <a href="/notices">
+                                {n.doe1 ? <span style={{ marginRight: "8px", color: "#666", fontSize: "0.9em" }}>{n.doe1}</span> : null}
+                                {n.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                        <ul style={{ listStyle: "none", padding: "10px 15px", margin: 0 }} aria-hidden="true">
+                          {news.slice(0, 15).map((n) => (
+                            <li key={`${n.id}-dup`} style={{ marginBottom: "12px", lineHeight: "1.4" }}>
+                              <a href="/notices">
+                                {n.doe1 ? <span style={{ marginRight: "8px", color: "#666", fontSize: "0.9em" }}>{n.doe1}</span> : null}
+                                {n.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ) : (
-                      <ul style={{ listStyle: "none", padding: "10px", margin: 0 }}>
-                        {news.slice(0, 6).map((n) => (
-                          <li key={n.id} style={{ marginBottom: "10px" }}>
+                      <ul style={{ listStyle: "none", padding: "10px 15px", margin: 0 }}>
+                        {news.map((n) => (
+                          <li key={n.id} style={{ marginBottom: "12px", lineHeight: "1.4" }}>
                             <a href="/notices">
-                              {n.doe1 ? <span style={{ marginRight: "6px", color: "#888" }}>{n.doe1}</span> : null}
+                              {n.doe1 ? <span style={{ marginRight: "8px", color: "#666", fontSize: "0.9em" }}>{n.doe1}</span> : null}
                               {n.title}
                             </a>
                           </li>
