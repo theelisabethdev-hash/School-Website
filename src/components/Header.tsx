@@ -123,6 +123,9 @@ export default function Header() {
                         <li className={pathname.startsWith("/admin/dashboard/school-timing") ? "current_page_item" : ""}>
                           <a href="/admin/dashboard/school-timing">School Timing</a>
                         </li>
+                        <li className={pathname.startsWith("/admin/dashboard/academic-calendar") ? "current_page_item" : ""}>
+                          <a href="/admin/dashboard/academic-calendar">Academic Calendar</a>
+                        </li>
                         {userEmail && (
                           <li className="admin-logout">
                             <a href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }} style={{ color: "#e74c3c" }}>

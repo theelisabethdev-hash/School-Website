@@ -61,14 +61,20 @@ export type FacilitiesItem = {
   order: number;
 };
 
+export type FaqItem = {
+  question: string;
+  answer: string;
+};
+
 export type SchoolTiming = {
   mainSchedule: string;
   officeHours: string;
-  teacherMeeting: string;
-  principalMeeting: string;
+  teacherMeeting?: string;
+  principalMeeting?: string;
   noteSession: string;
   noteDussehra: string;
   noteFee: string;
+  faqs?: FaqItem[];
 };
 
 const DEFAULT_SCHOOL_TIMING: SchoolTiming = {
@@ -79,6 +85,20 @@ const DEFAULT_SCHOOL_TIMING: SchoolTiming = {
   noteSession: 'The academic session starts in April and ends in March every year. The school closes for summer vacation from mid of May to the beginning of July.',
   noteDussehra: 'There is a short break in October during the Dussehra period and a winter break in December-January.',
   noteFee: 'Fee is to be paid for twelve months of the academic year.',
+  faqs: [
+    {
+      question: "What are the school timings at The Elisabeth Gauba School?",
+      answer: "Classes run Monday to Friday, 8:00 AM to 1:40 PM. Office hours are also 8:00 AM to 1:40 PM on all working days.",
+    },
+    {
+      question: "When can parents meet the teachers or the Principal?",
+      answer: "Parents can meet teachers by noting the reason in the almanac. The Principal can be met by prior appointment only.",
+    },
+    {
+      question: "What are the term dates and holidays for the academic year?",
+      answer: "The academic session runs from April to March. The school closes for summer vacation from mid-May to early July, with a short Dussehra break in October and a winter break in December–January.",
+    },
+  ],
 };
 
 async function getJSON<T>(path: string, fallback: T): Promise<T> {
@@ -113,3 +133,12 @@ export const getStaffCarousel = () => getJSON<StaffCarouselImage[]>("/staff/caro
 export const getCoCurricular = () => getJSON<CoCurricularItem[]>("/cocurricular", []);
 export const getFacilities = () => getJSON<FacilitiesItem[]>("/facilities", []);
 export const getSchoolTiming = () => getJSON<SchoolTiming>("/school-timing", DEFAULT_SCHOOL_TIMING);
+
+export type AcademicCalendar = {
+  pdfUrl: string;
+  storagePath: string;
+  fileName: string;
+  updatedAt: string;
+};
+
+export const getAcademicCalendar = () => getJSON<AcademicCalendar | null>("/academic-calendar", null);

@@ -64,16 +64,10 @@ export default function SchoolTimingClient({ timing }: Props) {
         /* Info Cards Grid */
         .st-cards-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1fr;
           gap: 20px;
           margin-bottom: 32px;
           animation: stSlideUp 0.7s ease-out 0.2s both;
-        }
-
-        @media (max-width: 640px) {
-          .st-cards-grid {
-            grid-template-columns: 1fr;
-          }
         }
 
         .st-card {
@@ -222,26 +216,6 @@ export default function SchoolTimingClient({ timing }: Props) {
           <div className="st-card-body">
             <h3>Office Hours</h3>
             <p>{timing.officeHours}</p>
-          </div>
-        </div>
-
-        <div className="st-card">
-          <div className="st-card-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}>
-            <i className="fa fa-users" aria-hidden="true"></i>
-          </div>
-          <div className="st-card-body">
-            <h3>Meet a Teacher</h3>
-            <p>{timing.teacherMeeting}</p>
-          </div>
-        </div>
-
-        <div className="st-card" style={{ gridColumn: '1 / -1' }}>
-          <div className="st-card-icon" style={{ background: '#fff7ed', color: '#ea580c' }}>
-            <i className="fa fa-user" aria-hidden="true"></i>
-          </div>
-          <div className="st-card-body">
-            <h3>Meet the Principal</h3>
-            <p>{timing.principalMeeting}</p>
           </div>
         </div>
       </div>

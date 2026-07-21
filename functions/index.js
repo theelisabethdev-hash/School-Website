@@ -410,6 +410,20 @@ app.get('/school-timing', async (req, res) => {
         noteSession: 'The academic session starts in April and ends in March every year. The school closes for summer vacation from mid of May to the beginning of July.',
         noteDussehra: 'There is a short break in October during the Dussehra period and a winter break in December-January.',
         noteFee: 'Fee is to be paid for twelve months of the academic year.',
+        faqs: [
+          {
+            question: "What are the school timings at The Elisabeth Gauba School?",
+            answer: "Classes run Monday to Friday, 8:00 AM to 1:40 PM. Office hours are also 8:00 AM to 1:40 PM on all working days."
+          },
+          {
+            question: "When can parents meet the teachers or the Principal?",
+            answer: "Parents can meet teachers by noting the reason in the almanac. The Principal can be met by prior appointment only."
+          },
+          {
+            question: "What are the term dates and holidays for the academic year?",
+            answer: "The academic session runs from April to March. The school closes for summer vacation from mid-May to early July, with a short Dussehra break in October and a winter break in December–January."
+          }
+        ],
       });
     }
     return res.json({ id: doc.id, ...doc.data() });
@@ -679,6 +693,20 @@ app.post('/contact', async (req, res) => {
   } catch (error) {
     console.error('Error handling contact form:', error);
     return res.status(500).json({ error: 'Failed to process message: ' + error.message });
+  }
+});
+
+// Get Academic Calendar
+app.get('/academic-calendar', async (req, res) => {
+  try {
+    const doc = await db.collection('academic_calendar').doc('main').get();
+    if (!doc.exists) {
+      return res.json(null);
+    }
+    return res.json(doc.data());
+  } catch (error) {
+    console.error('Error fetching academic calendar:', error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -1153,6 +1181,7 @@ app.put('/admin/school-timing', async (req, res) => {
       noteSession: data.noteSession || '',
       noteDussehra: data.noteDussehra || '',
       noteFee: data.noteFee || '',
+      faqs: Array.isArray(data.faqs) ? data.faqs : [],
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     await db.collection('school_timing').doc('main').set(timingData, { merge: true });
@@ -1527,6 +1556,82 @@ app.delete('/admin/staff/carousel/:id', async (req, res) => {
     return res.json({ success: true, message: 'Staff carousel image deleted successfully' });
   } catch (error) {
     console.error('Error deleting staff carousel image:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Admin: Upload Academic Calendar
+app.post('/admin/academic-calendar', upload.single('pdf'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'PDF file is required' });
+    }
+    
+    if (req.file.mimetype !== 'application/pdf') {
+      return res.status(400).json({ error: 'Only PDF files are allowed' });
+    }
+    
+    // Get existing document to delete old file
+    const docRef = db.collection('academic_calendar').doc('main');
+    const doc = await docRef.get();
+    if (doc.exists) {
+      const data = doc.data();
+      if (data.storagePath) {
+        try {
+          await bucket.file(data.storagePath).delete();
+        } catch (err) {
+          console.error('Failed to delete old academic calendar file:', err);
+        }
+      }
+    }
+    
+    // Upload new file
+    const folder = 'academic-calendar';
+    const uniqueName = `${folder}/${Date.now()}_${req.file.originalname}`;
+    const fileRef = bucket.file(uniqueName);
+    
+    await fileRef.save(req.file.buffer, {
+      metadata: { contentType: req.file.mimetype },
+      public: true
+    });
+    
+    const pdfUrl = `https://storage.googleapis.com/${bucket.name}/${uniqueName}`;
+    
+    const calendarData = {
+      pdfUrl,
+      storagePath: uniqueName,
+      fileName: req.file.originalname,
+      updatedAt: new Date().toISOString()
+    };
+    
+    await docRef.set(calendarData);
+    
+    return res.status(200).json({ success: true, calendar: calendarData });
+  } catch (error) {
+    console.error('Error uploading academic calendar:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Admin: Delete Academic Calendar
+app.delete('/admin/academic-calendar', async (req, res) => {
+  try {
+    const docRef = db.collection('academic_calendar').doc('main');
+    const doc = await docRef.get();
+    if (doc.exists) {
+      const data = doc.data();
+      if (data.storagePath) {
+        try {
+          await bucket.file(data.storagePath).delete();
+        } catch (err) {
+          console.error('Failed to delete academic calendar file:', err);
+        }
+      }
+      await docRef.delete();
+    }
+    return res.json({ success: true, message: 'Academic calendar deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting academic calendar:', error);
     return res.status(500).json({ error: error.message });
   }
 });

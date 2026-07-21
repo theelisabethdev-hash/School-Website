@@ -22,26 +22,30 @@ const FALLBACK_STAFF: StaffMember[] = [
   { id: "f9", name: "Ms. Sharon Bhardwaj", title: "Co-Curricular Teachers", order: 4 },
   { id: "f10", name: "Ms. Prerna Negi", title: "Co-Curricular Teachers", order: 5 },
   { id: "f11", name: "Ms. Bhavya Sharma", title: "Co-Curricular Teachers", order: 6 },
-  { id: "f12", name: "Mr. Garv Solanki", title: "Co-Curricular Teachers", role: "Sport Teacher", order: 7 },
 
   // Special Educator
   { id: "f13", name: "Ms. Shikha Awasthi", title: "Special Educator", order: 1 },
 
+  // Teachers (Pre-Primary)
+  { id: "f14", name: "Mrs. Nirmal Kaur", title: "Teachers (Pre-Primary)", order: 1 },
+  { id: "f15", name: "Mrs. Jeevika Lamba", title: "Teachers (Pre-Primary)", order: 2 },
+
   // Teachers (I-V)
-  { id: "f14", name: "Ms. Jeevika Lamba", title: "Teachers (I-V)", order: 1 },
-  { id: "f15", name: "Ms. Nanda Devi", title: "Teachers (I-V)", order: 2 },
-  { id: "f16", name: "Ms. Neeru Kalra", title: "Teachers (I-V)", order: 3 },
-  { id: "f17", name: "Ms. Sundus Khan", title: "Teachers (I-V)", order: 4 },
-  { id: "f18", name: "Ms. Rakhi Datta", title: "Teachers (I-V)", order: 5 },
+  { id: "f16", name: "Mrs. Karishma Manchanda", title: "Teachers (I-V)", order: 1 },
+  { id: "f17", name: "Mrs. Rakhi Datta", title: "Teachers (I-V)", order: 2 },
+  { id: "f18", name: "Mrs. Sundus Khan", title: "Teachers (I-V)", order: 3 },
+  { id: "f19", name: "Mrs. Neeru Kalra", title: "Teachers (I-V)", order: 4 },
+  { id: "f20", name: "Mrs. Deepshikha Choudhary", title: "Teachers (I-V)", order: 5 },
+  { id: "f21", name: "Mrs. Nanda", title: "Teachers (I-V)", order: 6 },
 
   // Support Staff
-  { id: "f19", name: "Asha Tomar", title: "Support Staff", order: 1 },
-  { id: "f20", name: "Ranjeeta", title: "Support Staff", order: 2 },
-  { id: "f21", name: "Geeta", title: "Support Staff", order: 3 },
-  { id: "f22", name: "Aarti", title: "Support Staff", order: 4 },
-  { id: "f23", name: "Manisha", title: "Support Staff", order: 5 },
-  { id: "f24", name: "Soban Singh", title: "Support Staff", order: 6 },
-  { id: "f25", name: "Ramesh Chand", title: "Support Staff", order: 7 },
+  { id: "f22", name: "Asha Tomar", title: "Support Staff", order: 1 },
+  { id: "f23", name: "Ranjeeta", title: "Support Staff", order: 2 },
+  { id: "f24", name: "Geeta", title: "Support Staff", order: 3 },
+  { id: "f25", name: "Aarti", title: "Support Staff", order: 4 },
+  { id: "f26", name: "Manisha", title: "Support Staff", order: 5 },
+  { id: "f27", name: "Soban Singh", title: "Support Staff", order: 6 },
+  { id: "f28", name: "Ramesh Chand", title: "Support Staff", order: 7 },
 ];
 
 const FALLBACK_CAROUSEL = [

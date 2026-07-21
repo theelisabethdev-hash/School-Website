@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const timing = await getSchoolTiming();
+  const faqs = timing.faqs && timing.faqs.length > 0 ? timing.faqs : timingFaqs;
 
   return (
     <div id="body">
@@ -28,9 +29,9 @@ export default async function Page() {
         <SchoolTimingClient timing={timing} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(timingFaqs)) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs)) }}
         />
-        <FaqSection items={timingFaqs} />
+        <FaqSection items={faqs} />
       </section>
     </div>
   );

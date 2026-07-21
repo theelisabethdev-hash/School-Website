@@ -21,6 +21,7 @@ type Stats = {
   staff: number;
   cocurricular: number;
   facilities: number;
+  academicCalendar: string | null;
 };
 
 export default function AdminDashboardPage() {
@@ -38,6 +39,7 @@ export default function AdminDashboardPage() {
     staff: 0,
     cocurricular: 0,
     facilities: 0,
+    academicCalendar: null,
   });
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +50,7 @@ export default function AdminDashboardPage() {
         const headers = { Authorization: `Bearer ${token}` };
 
         // Fetch all in parallel
-        const [bannersRes, noticesRes, galleryRes, activitiesRes, regRes, subRes, contactsRes, vacanciesRes, societyRes, staffRes, cocurricularRes, facilitiesRes] = await Promise.all([
+        const [bannersRes, noticesRes, galleryRes, activitiesRes, regRes, subRes, contactsRes, vacanciesRes, societyRes, staffRes, cocurricularRes, facilitiesRes, calendarRes] = await Promise.all([
           fetch(`${API_BASE}/banners`),
           fetch(`${API_BASE}/news`),
           fetch(`${API_BASE}/gallery`),
@@ -61,6 +63,7 @@ export default function AdminDashboardPage() {
           fetch(`${API_BASE}/staff`),
           fetch(`${API_BASE}/cocurricular`),
           fetch(`${API_BASE}/facilities`),
+          fetch(`${API_BASE}/academic-calendar`),
         ]);
 
         const banners = bannersRes.ok ? await bannersRes.json() : [];
@@ -75,6 +78,7 @@ export default function AdminDashboardPage() {
         const staff = staffRes.ok ? await staffRes.json() : [];
         const cocurricular = cocurricularRes.ok ? await cocurricularRes.json() : [];
         const facilities = facilitiesRes.ok ? await facilitiesRes.json() : [];
+        const calendar = calendarRes.ok ? await calendarRes.json() : null;
 
         setStats({
           banners: Array.isArray(banners) ? banners.length : 0,
@@ -90,6 +94,7 @@ export default function AdminDashboardPage() {
           staff: Array.isArray(staff) ? staff.length : 0,
           cocurricular: Array.isArray(cocurricular) ? cocurricular.length : 0,
           facilities: Array.isArray(facilities) ? facilities.length : 0,
+          academicCalendar: calendar ? calendar.fileName : null,
         });
       } catch (err) {
         console.error("Failed to fetch dashboard stats", err);
@@ -322,6 +327,25 @@ export default function AdminDashboardPage() {
               <p style={{ color: "#777", marginBottom: "20px" }}>Manage school hours, office timing, and important notes.</p>
               <a href="/admin/dashboard/school-timing" className="btn btn-block" style={{ background: "#6c757d", borderColor: "#6c757d", color: "#fff" }}>
                 Edit School Timing
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-4 col-sm-6 col-xs-12" style={{ marginBottom: "20px" }}>
+          <div className="panel panel-primary" style={{ borderColor: "#c0392b" }}>
+            <div className="panel-heading" style={{ background: "#c0392b", borderColor: "#c0392b" }}>
+              <h3 className="panel-title" style={{ fontWeight: "bold" }}>Academic Calendar</h3>
+            </div>
+            <div className="panel-body" style={{ textAlign: "center", padding: "30px 15px" }}>
+              <div style={{ fontSize: "48px", margin: "10px 0", color: "#c0392b" }}>
+                <i className="fa fa-calendar" aria-hidden="true"></i>
+              </div>
+              <p style={{ color: "#777", marginBottom: "20px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {stats.academicCalendar ? `Uploaded: ${stats.academicCalendar}` : "No calendar uploaded yet (using fallback)."}
+              </p>
+              <a href="/admin/dashboard/academic-calendar" className="btn btn-block" style={{ background: "#c0392b", borderColor: "#c0392b", color: "#fff" }}>
+                Manage Calendar
               </a>
             </div>
           </div>
