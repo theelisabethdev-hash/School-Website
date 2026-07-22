@@ -6,40 +6,6 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "/api";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-function Field({
-  label,
-  name,
-  type = "text",
-  required = false,
-  as = "input",
-  accept,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  as?: "input" | "textarea" | "file";
-  accept?: string;
-}) {
-  return (
-    <div className="col-md-6" style={{ marginBottom: "15px" }}>
-      <div className="form-group">
-        <label className="control-label">
-          {label}
-          {required && <span style={{ color: "#c0392b" }}> *</span>}
-        </label>
-        {as === "textarea" ? (
-          <textarea name={name} required={required} rows={2} className="form-control" />
-        ) : as === "file" ? (
-          <input name={name} type="file" required={required} accept={accept} className="form-control" />
-        ) : (
-          <input name={name} type={type} required={required} className="form-control" />
-        )}
-      </div>
-    </div>
-  );
-}
-
 export default function FormSubmissionForm() {
   const [status, setStatus] = useState<Status>("idle");
 
@@ -73,65 +39,182 @@ export default function FormSubmissionForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="myforms" encType="multipart/form-data">
-      <fieldset style={{ marginBottom: "25px" }}>
-        <legend className="Main_header" style={{ fontSize: "20px", borderBottom: "1px solid #ddd", paddingBottom: "8px" }}>
-          Applicant Information
-        </legend>
-        <div className="row">
-          <Field label="Parent/Guardian Name" name="per_name" required />
-          <Field label="Email Address" name="per_email" type="email" required />
-          <Field label="Mobile Number" name="per_mobile" type="tel" required />
-        </div>
-      </fieldset>
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <div className="row">
+        <div className="col-md-12">
 
-      <fieldset style={{ marginBottom: "25px" }}>
-        <legend className="Main_header" style={{ fontSize: "20px", borderBottom: "1px solid #ddd", paddingBottom: "8px" }}>
-          Payment & Transaction Details
-        </legend>
-        <div className="row">
-          <Field label="Transaction ID / Reference ID" name="trans_id" required />
-          <Field label="Transaction Date & Time" name="per_date_time" type="datetime-local" required />
-        </div>
-      </fieldset>
+          {/* Registration Form PDF Upload */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <label className="labelfont">
+                Registration Form Pdf Upload<span className="Redcolor">*</span>
+              </label>
+              <input
+                required
+                name="pdf_doc"
+                accept=".pdf"
+                type="file"
+                className="form-control pull-right MandetoryField"
+                placeholder="Registration Date"
+              />
+              <p className="help-block"></p>
+            </div>
+          </div>
 
-      <fieldset style={{ marginBottom: "25px" }}>
-        <legend className="Main_header" style={{ fontSize: "20px", borderBottom: "1px solid #ddd", paddingBottom: "8px" }}>
-          Upload Documents (Max 5MB each)
-        </legend>
-        <div className="row">
-          <Field
-            label="Filled Registration Form (PDF format only)"
-            name="pdf_doc"
-            as="file"
-            accept=".pdf"
-            required
-          />
-          <Field
-            label="Payment Receipt Screenshot"
-            name="image"
-            as="file"
-            accept="image/*,.pdf"
-            required
-          />
-          <Field
-            label="Supporting Document (optional, PDF format only)"
-            name="document"
-            as="file"
-            accept=".pdf"
-          />
-        </div>
-      </fieldset>
+          {/* Name */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <div className="controls">
+                <label className="labelfont">
+                  Name<span className="Redcolor">*</span>
+                </label>
+                <input
+                  required
+                  name="per_name"
+                  type="text"
+                  maxLength={20}
+                  className="form-control pull-right MandetoryField"
+                  placeholder="Full Name"
+                />
+                <p className="help-block"></p>
+              </div>
+            </div>
+          </div>
 
-      <div style={{ marginTop: "20px" }}>
-        <button type="submit" disabled={status === "sending"} className="btn btn-primary">
-          {status === "sending" ? "Uploading files…" : "Submit Registration Files"}
-        </button>
-        {status === "error" && (
-          <p role="alert" className="text-danger" style={{ marginTop: "15px" }}>
-            Upload failed. Please check your network connection and file sizes, then try again.
-          </p>
-        )}
+          {/* Email */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <div className="controls">
+                <label className="labelfont">
+                  Email<span className="Redcolor">*</span>
+                </label>
+                <input
+                  required
+                  name="per_email"
+                  type="email"
+                  className="form-control pull-right MandetoryField"
+                  placeholder="Email Id"
+                />
+                <p className="help-block"></p>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Number */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <div className="controls">
+                <label className="labelfont">
+                  Mobile Number<span className="Redcolor">*</span>
+                </label>
+                <input
+                  required
+                  name="per_mobile"
+                  type="text"
+                  maxLength={20}
+                  className="form-control pull-right MandetoryField"
+                  placeholder="Mobile Number"
+                />
+                <p className="help-block"></p>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Screenshot */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <label className="labelfont">
+                Payement Screenshot (jpg/png image)<span className="Redcolor">*</span>
+              </label>
+              <input
+                required
+                name="image"
+                type="file"
+                accept="image/jpeg,image/png,image/jpg"
+                className="form-control pull-right MandetoryField"
+              />
+              <p className="help-block"></p>
+            </div>
+          </div>
+
+          {/* Transaction Number */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <div className="controls">
+                <label className="labelfont">
+                  Transaction number<span className="Redcolor">*</span>
+                </label>
+                <input
+                  required
+                  name="trans_id"
+                  type="text"
+                  className="form-control pull-right MandetoryField"
+                  placeholder="Transaction number"
+                />
+                <p className="help-block"></p>
+              </div>
+            </div>
+          </div>
+
+          {/* Upload Document (Upto 15MB) */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <label className="labelfont">
+                Upload Document (Upto 15MB)<span className="Redcolor">*</span>
+              </label>
+              <input
+                required
+                name="document"
+                accept=".pdf"
+                type="file"
+                className="form-control pull-right MandetoryField"
+              />
+              <p className="help-block"></p>
+            </div>
+          </div>
+
+          {/* Payment Date & Time */}
+          <div className="col-md-12">
+            <div className="control-group form-group">
+              <div className="controls">
+                <label className="labelfont">
+                  Payement Date &amp; time<span className="Redcolor">*</span>
+                </label>
+                <input
+                  required
+                  name="per_date_time"
+                  type="text"
+                  className="form-control pull-right MandetoryField"
+                  placeholder="e.g. 23-07-2025 10:30 AM"
+                />
+                <p className="help-block"></p>
+              </div>
+            </div>
+          </div>
+
+          <br />
+
+          {/* Submit Button */}
+          <div className="col-md-3" style={{ marginTop: "10px" }}>
+            <button
+              type="submit"
+              name="submit"
+              disabled={status === "sending"}
+              className="form-control btn btn-primary pull-right"
+            >
+              {status === "sending" ? "Uploading…" : "Submit"}
+            </button>
+          </div>
+
+          {status === "error" && (
+            <div className="col-md-12" style={{ marginTop: "15px" }}>
+              <p role="alert" className="text-danger">
+                Upload failed. Please check your network connection and file sizes, then try again.
+              </p>
+            </div>
+          )}
+
+        </div>
       </div>
     </form>
   );

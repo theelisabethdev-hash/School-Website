@@ -377,7 +377,13 @@ export default function RegistrationForm() {
           </p>
         </div>
         <div className="col-md-2" style={{ paddingTop: 20 }}>
-          <a href="/form-submission">Already Registered, click here</a>
+          <a
+            href="https://storage.googleapis.com/the-elisabeth-gauba-scho-534b5.firebasestorage.app/Registration%20Form.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Already Registered, click here
+          </a>
         </div>
       </div>
 
