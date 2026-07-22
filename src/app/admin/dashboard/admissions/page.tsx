@@ -63,7 +63,14 @@ type OnlineRegistration = {
     child_cert?: string;
     residence_proof?: string;
     payement_image?: string;
+    adhar_card?: string;
+    cert_copy?: string;
   };
+  per_name?: string;
+  per_email?: string;
+  per_mobile?: string;
+  trans_id?: string;
+  per_date_time?: string;
   doe?: string;
 };
 
@@ -459,6 +466,25 @@ export default function AdmissionsManagerPage() {
 
               <div className="row">
                 <div className="col-md-12">
+                  <h4 style={{ fontWeight: "bold", color: "#214AB3", borderBottom: "1px solid #eee", paddingBottom: "5px" }}>Payment Details</h4>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <p><strong>Payer Name:</strong> {selectedOnline.per_name || "N/A"}</p>
+                      <p><strong>Payer Email:</strong> {selectedOnline.per_email || "N/A"}</p>
+                      <p><strong>Payer Mobile:</strong> {selectedOnline.per_mobile || "N/A"}</p>
+                    </div>
+                    <div className="col-md-6">
+                      <p><strong>Transaction ID:</strong> <code>{selectedOnline.trans_id || "N/A"}</code></p>
+                      <p><strong>Payment Date &amp; Time:</strong> {selectedOnline.per_date_time || "N/A"}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+
+              <div className="row">
+                <div className="col-md-12">
                   <h4 style={{ fontWeight: "bold", color: "#214AB3", borderBottom: "1px solid #eee", paddingBottom: "5px" }}>Uploaded Documents</h4>
                   <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "10px" }}>
                     {selectedOnline.documents?.child_cert && (
@@ -474,6 +500,16 @@ export default function AdmissionsManagerPage() {
                     {selectedOnline.documents?.payement_image && (
                       <a href={selectedOnline.documents.payement_image} target="_blank" rel="noreferrer" className="btn btn-default">
                         <i className="fa fa-file-image-o"></i> Payment Receipt Screenshot
+                      </a>
+                    )}
+                    {selectedOnline.documents?.adhar_card && (
+                      <a href={selectedOnline.documents.adhar_card} target="_blank" rel="noreferrer" className="btn btn-default">
+                        <i className="fa fa-file-pdf-o"></i> Child Aadhaar Card
+                      </a>
+                    )}
+                    {selectedOnline.documents?.cert_copy && (
+                      <a href={selectedOnline.documents.cert_copy} target="_blank" rel="noreferrer" className="btn btn-default">
+                        <i className="fa fa-file-pdf-o"></i> Report Card of Last School
                       </a>
                     )}
                   </div>

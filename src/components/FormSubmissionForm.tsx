@@ -14,7 +14,7 @@ export default function FormSubmissionForm() {
     setStatus("sending");
     const form = e.currentTarget;
     try {
-      const res = await fetch(`${API_BASE}/form_submission.php`, {
+      const res = await fetch(`${API_BASE}/submit`, {
         method: "POST",
         body: new FormData(form),
       });
@@ -128,7 +128,7 @@ export default function FormSubmissionForm() {
               </label>
               <input
                 required
-                name="image"
+                name="payement_image"
                 type="file"
                 accept="image/jpeg,image/png,image/jpg"
                 className="form-control pull-right MandetoryField"

@@ -10,6 +10,9 @@ export const metadata = pageMetadata("/fee-structure");
 export default function Page() {
   return (
     <div id="body">
+      {/* JSON-LD structured data — kept before the dangerouslySetInnerHTML section
+          and before the Client Component boundary so React hydration never has to
+          reconcile them against browser-reparsed HTML. */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -22,13 +25,13 @@ export default function Page() {
           ),
         }}
       />
-      <section
-        className="content-wrapper main-content clear-fix"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(feeFaqs)) }}
+      />
+      <section
+        className="content-wrapper main-content clear-fix"
+        dangerouslySetInnerHTML={{ __html: html }}
       />
       <FaqSection items={feeFaqs} />
     </div>

@@ -512,7 +512,9 @@ app.post('/register', upload.fields([
   { name: 'payement_image', maxCount: 1 },
   { name: 'child_photo', maxCount: 1 },
   { name: 'child_cert', maxCount: 1 },
-  { name: 'residence_proof', maxCount: 1 }
+  { name: 'residence_proof', maxCount: 1 },
+  { name: 'adhar_card', maxCount: 1 },
+  { name: 'cert_copy', maxCount: 1 }
 ]), async (req, res) => {
   try {
     const data = req.body;
@@ -525,6 +527,8 @@ app.post('/register', upload.fields([
       if (files.child_photo) uploadedDocs.child_photo = await uploadToStorage(files.child_photo[0], 'registrations');
       if (files.child_cert) uploadedDocs.child_cert = await uploadToStorage(files.child_cert[0], 'registrations');
       if (files.residence_proof) uploadedDocs.residence_proof = await uploadToStorage(files.residence_proof[0], 'registrations');
+      if (files.adhar_card) uploadedDocs.adhar_card = await uploadToStorage(files.adhar_card[0], 'registrations');
+      if (files.cert_copy) uploadedDocs.cert_copy = await uploadToStorage(files.cert_copy[0], 'registrations');
     }
 
     // Get incremental registration/student ID
@@ -614,9 +618,17 @@ app.post('/register', upload.fields([
       guardian_name: data.guardian_name || '',
       guardian_type: data.guardian_type || '',
       student_name_under: data.student_name_under || '',
+
+      // Payment Details
+      per_name: data.per_name || '',
+      per_email: data.per_email || '',
+      per_mobile: data.per_mobile || '',
+      trans_id: data.trans_id || '',
+      per_date_time: data.per_date_time || '',
       
       // Uploaded Document Links
       documents: uploadedDocs,
+      doe: new Date().toLocaleDateString('en-GB'),
       timestamp: admin.firestore.FieldValue.serverTimestamp()
     };
 
@@ -637,7 +649,8 @@ app.post('/register', upload.fields([
 // 6. Generic Form Submission (e.g. general contact/admission forms)
 app.post('/submit', upload.fields([
   { name: 'payement_image', maxCount: 1 },
-  { name: 'document', maxCount: 1 }
+  { name: 'document', maxCount: 1 },
+  { name: 'pdf_doc', maxCount: 1 }
 ]), async (req, res) => {
   try {
     const data = req.body;
@@ -647,6 +660,7 @@ app.post('/submit', upload.fields([
     if (files) {
       if (files.payement_image) uploadedDocs.payement_image = await uploadToStorage(files.payement_image[0], 'submissions');
       if (files.document) uploadedDocs.document = await uploadToStorage(files.document[0], 'submissions');
+      if (files.pdf_doc) uploadedDocs.pdf_doc = await uploadToStorage(files.pdf_doc[0], 'submissions');
     }
 
     const submissionData = {
@@ -654,8 +668,12 @@ app.post('/submit', upload.fields([
       per_email: data.per_email || '',
       per_mobile: data.per_mobile || '',
       trans_id: data.trans_id || '',
-      per_date_time: new Date().toISOString(),
+      per_date_time: data.per_date_time || new Date().toISOString(),
+      pdf_doc: uploadedDocs.pdf_doc || '',
+      payement_image: uploadedDocs.payement_image || '',
+      document: uploadedDocs.document || '',
       documents: uploadedDocs,
+      doe: new Date().toLocaleDateString('en-GB'),
       timestamp: admin.firestore.FieldValue.serverTimestamp()
     };
 
@@ -717,7 +735,7 @@ app.get('/academic-calendar', async (req, res) => {
 app.use('/admin', authMiddleware);
 
 // Admin: Get All Registrations
-app.get('/admin/registrations', async (req, res) => {
+app.get('/admin/registrations', authMiddleware, async (req, res) => {
   try {
     const snapshot = await db.collection('registrations').orderBy('timestamp', 'desc').get();
     const data = [];
@@ -900,7 +918,7 @@ app.delete('/admin/banners/:id', async (req, res) => {
 });
 
 // Admin: Get all form submissions
-app.get('/admin/submissions', async (req, res) => {
+app.get('/admin/submissions', authMiddleware, async (req, res) => {
   try {
     const snapshot = await db.collection('submissions').orderBy('timestamp', 'desc').get();
     const data = [];
