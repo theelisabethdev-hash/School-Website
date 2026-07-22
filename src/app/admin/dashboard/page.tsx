@@ -157,7 +157,6 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
-
         <div className="col-md-4 col-sm-6 col-xs-12" style={{ marginBottom: "20px" }}>
           <div className="panel panel-primary" style={{ borderColor: "#214AB3" }}>
             <div className="panel-heading" style={{ background: "#214AB3", borderColor: "#214AB3" }}>
@@ -166,14 +165,13 @@ export default function AdminDashboardPage() {
             <div className="panel-body" style={{ textAlign: "center", padding: "30px 15px" }}>
               <h1 style={{ fontSize: "48px", fontWeight: "bold", margin: "10px 0", color: "#214AB3" }}>{stats.gallery}</h1>
               <p style={{ color: "#777", marginBottom: "20px" }}>Albums and photo sets available to users.</p>
-              <a href="/admin/dashboard/gallery" className="btn btn-primary btn-block" style={{ background: "#214AB3" }}>
-                Manage Gallery
+              <a href="/admin/dashboard/gallery" className="btn btn-primary btn-block disabled" style={{ background: "#393d46" }}>
+                Manage Gallery (Disabled)
               </a>
             </div>
           </div>
         </div>
       </div>
-
       <div className="row" style={{ marginTop: "10px" }}>
         <div className="col-md-4 col-sm-6 col-xs-12" style={{ marginBottom: "20px" }}>
           <div className="panel panel-primary" style={{ borderColor: "#27ae60" }}>

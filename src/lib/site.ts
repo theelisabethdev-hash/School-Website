@@ -83,7 +83,7 @@ export const nav: NavGroup[] = [
       { label: "Online/Pandemic Learning", href: "/online-learning" },
       { label: "Vacancy", href: "/vacancies" },
       { label: "Notices", href: "/notices" },
-      { label: "Photo Gallery", href: "/gallery" },
+      // { label: "Photo Gallery", href: "/gallery" }, 
       { label: "Activities", href: "/activities" },
     ],
   },

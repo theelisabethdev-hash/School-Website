@@ -96,9 +96,9 @@ export default function Header() {
                         <li className={pathname.startsWith("/admin/dashboard/banners") ? "current_page_item" : ""}>
                           <a href="/admin/dashboard/banners">Banners</a>
                         </li>
-                        <li className={pathname.startsWith("/admin/dashboard/gallery") ? "current_page_item" : ""}>
+                        {/* <li className={pathname.startsWith("/admin/dashboard/gallery") ? "current_page_item" : ""}>
                           <a href="/admin/dashboard/gallery">Gallery</a>
-                        </li>
+                        </li> */}
                         <li className={pathname.startsWith("/admin/dashboard/activities") ? "current_page_item" : ""}>
                           <a href="/admin/dashboard/activities">Activities</a>
                         </li>
