@@ -175,7 +175,7 @@ export default function SocietyManagerPage() {
         <div className="col-md-12" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <h2 className="Main_header" style={{ fontSize: "28px", margin: 0 }}>Shiv Niketan Society Manager</h2>
-            <p style={{ color: "#777", marginTop: "5px" }}>Manage photo albums and downloadable files shown under Shiv Niketan Society on the Activities page.</p>
+            <p style={{ color: "#777", marginTop: "5px" }}>Manage photo albums and downloadable files shown under Shiv Niketan Society on the Setu Project page.</p>
           </div>
           <div style={{ display: "flex", gap: "10px" }}>
             <button className="btn btn-primary" onClick={() => handleOpenAdd("category")}>
