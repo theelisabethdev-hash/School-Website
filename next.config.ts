@@ -32,10 +32,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       ...legacyRedirects,
-      // Old PHP endpoints that used to render pages.
-      { source: "/AnualEvents.php", destination: "/activities", permanent: true },
-      { source: "/gallery.php", destination: "/gallery", permanent: true },
-      { source: "/news.php", destination: "/notices", permanent: true },
       // PDF Redirects to Firebase Storage
       {
         source: "/Documents/:file*",

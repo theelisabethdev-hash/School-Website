@@ -560,7 +560,8 @@ fieldset.scheduler-border {
     background-color:#fff;
     width: 100%;
 	z-index: 999999;
-    height:88px;
+    min-height: 105px;
+    height: auto;
 }
 
 .w3layouts_header_right ul li{

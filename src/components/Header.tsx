@@ -153,7 +153,16 @@ export default function Header() {
 
   return (
     <>
-      <div className="header row">
+      <div
+        className="header row"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "10px 25px 8px 25px",
+          minHeight: "105px",
+        }}
+      >
         <div className="col-sm-10 col-xs-12 text-center header-left-col">
           <a
             href="/"
@@ -162,7 +171,7 @@ export default function Header() {
               float: "none",
               display: "inline-flex",
               alignItems: "center",
-              gap: "15px",
+              gap: "18px",
               textDecoration: "none",
             }}
           >
@@ -170,7 +179,7 @@ export default function Header() {
               src="/images/school-logo.jpg"
               alt="Shiv Niketan Education Society"
               className="header-logo-img"
-              style={{ height: "62px", width: "62px", objectFit: "contain" }}
+              style={{ height: "85px", width: "85px", objectFit: "contain" }}
             />
             <span style={{ textAlign: "left" }} className="header-text-container">
               <span
@@ -180,26 +189,33 @@ export default function Header() {
                   color: "#214AB3",
                   fontWeight: "bold",
                   fontFamily: "Georgia, 'Times New Roman', Times, serif",
-                  fontSize: "26px",
-                  lineHeight: "1.3",
+                  fontSize: "33px",
+                  lineHeight: "1.25",
                 }}
               >
                 The Elisabeth Gauba School
               </span>
-              <span className="header-subtitle" style={{ display: "block", color: "#000", fontSize: "14px" }}>
+              <span className="header-subtitle" style={{ display: "block", color: "#000", fontSize: "16px", marginTop: "2px" }}>
                 ESTD : 1938 | Formerly, Shiv Niketan School
               </span>
             </span>
           </a>
         </div>
-        <div className="col-sm-2 col-xs-12 header-social-col" style={{ marginTop: "20px" }}>
-          <div className="social-icons-wrapper">
+        <div
+          className="col-sm-2 col-xs-12 header-social-col"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            paddingRight: "15px",
+          }}
+        >
+          <div className="social-icons-wrapper" style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}>
             <a href="https://m.facebook.com/TheElisabethGaubaSchool" target="_blank" rel="noreferrer">
-              <i style={{ fontSize: "30px" }} className="fa fa-facebook-square" aria-hidden="true"></i>
+              <i style={{ fontSize: "32px" }} className="fa fa-facebook-square" aria-hidden="true"></i>
             </a>
-            &nbsp;
             <a href="https://www.instagram.com/theelisabethgaubaschool/" target="_blank" rel="noreferrer">
-              <i style={{ fontSize: "30px" }} className="fa fa-instagram" aria-hidden="true"></i>
+              <i style={{ fontSize: "32px" }} className="fa fa-instagram" aria-hidden="true"></i>
             </a>
           </div>
         </div>
