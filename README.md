@@ -20,7 +20,7 @@ Codebase for the official website of **The Elisabeth Gauba School (Shiv Niketan)
 | **jQuery** | Legacy | Loaded from `public/` alongside Bootstrap |
 | **Owl Carousel** | 1.3.3 | Image gallery carousels on pages |
 
-> The original Bootstrap 3 / jQuery design is preserved intentionally — the Next.js migration changed the framework, not the look.
+> The original Bootstrap 3 / jQuery design is preserved intentionally — the Next.js migration changed the framework, not the look. All legacy PHP dependencies, templates, and wrapper endpoints have been fully removed; the application is 100% Next.js + Node.js.
 
 ### Backend
 | Technology | Role |
@@ -104,8 +104,7 @@ php_website/                        ← project root (clone this folder)
 │   └── content/                    ← Ported legacy page HTML content
 │
 ├── functions/                      ← Firebase Cloud Functions (backend)
-│   ├── index.js                    ← Express REST API + legacy wrappers
-│   ├── templates/                  ← Email HTML templates (Nodemailer)
+│   ├── index.js                    ← Express REST API (Node.js)
 │   └── package.json                ← Backend dependencies
 │
 ├── public/                         ← Static assets served at /
