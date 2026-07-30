@@ -556,12 +556,12 @@ fieldset.scheduler-border {
 
 .header {
     padding: 0em 0em;
-    /*background: #309ED9;*/
     background-color:#fff;
     width: 100%;
-	z-index: 999999;
-    min-height: 105px;
+    z-index: 999999;
+    min-height: auto;
     height: auto;
+    margin-bottom: 0px;
 }
 
 .w3layouts_header_right ul li{
@@ -3067,21 +3067,6 @@ section.contact-w3ls h4 {
 
 /* Custom Responsive Enhancements */
 @media (max-width: 767px) {
-  .header-left-col {
-    display: flex !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
-  .header-logo-link {
-    display: inline-flex !important;
-    justify-content: center !important;
-    text-align: left !important;
-  }
-  .header-social-col {
-    text-align: center !important;
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
-  }
   .header-title {
     font-size: 20px !important;
   }

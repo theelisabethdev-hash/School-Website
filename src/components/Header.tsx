@@ -37,8 +37,8 @@ export default function Header() {
   if (isAdminRoute) {
     return (
       <>
-        <div className="header row">
-          <div className="col-sm-12 col-xs-12 text-center header-left-col">
+        <div className="header row" style={{ display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
+          <div className="col-sm-12 col-xs-12 text-center header-left-col" style={{ display: "flex", justifyContent: "center" }}>
             <a
               href="/admin/dashboard"
               className="header-logo-link"
@@ -70,7 +70,7 @@ export default function Header() {
                 >
                   The Elisabeth Gauba School — Admin Panel
                 </span>
-                <span className="header-subtitle" style={{ display: "block", color: "#000", fontSize: "14px" }}>
+                <span className="header-subtitle" style={{ display: "block", color: "#000", fontSize: "14px", fontWeight: "bold" }}>
                   ESTD : 1938 | Managed by Shiv Niketan Society
                 </span>
               </span>
@@ -153,71 +153,24 @@ export default function Header() {
 
   return (
     <>
-      <div
-        className="header row"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "10px 25px 8px 25px",
-          minHeight: "105px",
-        }}
-      >
-        <div className="col-sm-10 col-xs-12 text-center header-left-col">
-          <a
-            href="/"
-            className="header-logo-link"
-            style={{
-              float: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "18px",
-              textDecoration: "none",
-            }}
-          >
+      <div className="header row" style={{ minHeight: "auto", marginBottom: "0px", paddingBottom: "0px" }}>
+        <div className="col-md-11 col-xs-9 text-center" style={{ paddingBottom: "0px", marginBottom: "0px" }}>
+          <a href="/" style={{ float: "none", display: "inline-block", verticalAlign: "bottom" }}>
             <img
-              src="/images/school-logo.jpg"
-              alt="Shiv Niketan Education Society"
-              className="header-logo-img"
-              style={{ height: "85px", width: "85px", objectFit: "contain" }}
+              src="/images/logo_desktop.png"
+              className="img-responsive"
+              alt="The Elisabeth Gauba School"
+              style={{ display: "inline-block", verticalAlign: "bottom", marginBottom: "0px" }}
             />
-            <span style={{ textAlign: "left" }} className="header-text-container">
-              <span
-                className="header-title"
-                style={{
-                  display: "block",
-                  color: "#214AB3",
-                  fontWeight: "bold",
-                  fontFamily: "Georgia, 'Times New Roman', Times, serif",
-                  fontSize: "33px",
-                  lineHeight: "1.25",
-                }}
-              >
-                The Elisabeth Gauba School
-              </span>
-              <span className="header-subtitle" style={{ display: "block", color: "#000", fontSize: "16px", marginTop: "2px" }}>
-                ESTD : 1938 | Formerly, Shiv Niketan School
-              </span>
-            </span>
           </a>
         </div>
-        <div
-          className="col-sm-2 col-xs-12 header-social-col"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            paddingRight: "15px",
-          }}
-        >
-          <div className="social-icons-wrapper" style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}>
-            <a href="https://m.facebook.com/TheElisabethGaubaSchool" target="_blank" rel="noreferrer">
-              <i style={{ fontSize: "32px" }} className="fa fa-facebook-square" aria-hidden="true"></i>
-            </a>
-            <a href="https://www.instagram.com/theelisabethgaubaschool/" target="_blank" rel="noreferrer">
-              <i style={{ fontSize: "32px" }} className="fa fa-instagram" aria-hidden="true"></i>
-            </a>
-          </div>
+        <div className="col-md-1 col-xs-3" style={{ float: "right", marginTop: "20px", display: "inline-flex", alignItems: "center", gap: "16px", justifyContent: "flex-end" }}>
+          <a href="https://m.facebook.com/TheElisabethGaubaSchool" target="_blank" rel="noreferrer" title="Facebook">
+            <i style={{ fontSize: "30px" }} className="fa fa-facebook-square" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.instagram.com/theelisabethgaubaschool/" target="_blank" rel="noreferrer" title="Instagram">
+            <i style={{ fontSize: "30px" }} className="fa fa-instagram" aria-hidden="true"></i>
+          </a>
         </div>
       </div>
 
