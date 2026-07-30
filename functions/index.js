@@ -115,12 +115,16 @@ app.get('/news', async (req, res) => {
     const homepageOnly = req.query.homepage === '1';
     const query = db.collection('news').orderBy('doe1', 'desc');
     const snapshot = await query.get();
-    let news = [];
+    let allNews = [];
     snapshot.forEach(doc => {
-      news.push({ id: doc.id, ...doc.data() });
+      allNews.push({ id: doc.id, ...doc.data() });
     });
+    let news = allNews;
     if (homepageOnly) {
-      news = news.filter(item => item.home_page === '1');
+      news = allNews.filter(item => item.home_page === '1' || item.home_page === true || item.home_page === 'true' || item.home_page === 1);
+      if (news.length === 0 && allNews.length > 0) {
+        news = allNews;
+      }
     }
     return res.json(news);
   } catch (error) {

@@ -1,11 +1,9 @@
 import { pageMetadata, homeFaqs, faqJsonLd } from "@/lib/seo";
-import { getBanners, getNews, getGallery } from "@/lib/api";
+import { getBanners, getNews, getGallery, DEFAULT_NEWS } from "@/lib/api";
 import AdmissionPopup from "@/components/AdmissionPopup";
 import HeroCarousel from "@/components/HeroCarousel";
 import FaqSection from "@/components/FaqSection";
 import ContactForm from "@/components/ContactForm";
-
-
 
 export const metadata = pageMetadata("/");
 
@@ -20,11 +18,13 @@ const MARQUEE_HTML = `
 </marquee>`;
 
 export default async function HomePage() {
-  const [banners, news, gallery] = await Promise.all([
+  const [banners, rawNews, gallery] = await Promise.all([
     getBanners(),
     getNews(true),
     getGallery(),
   ]);
+
+  const news = rawNews && rawNews.length > 0 ? rawNews : DEFAULT_NEWS;
 
 
   const galleryImages = gallery
@@ -144,9 +144,8 @@ export default async function HomePage() {
                       <div className="notices-marquee-content">
                         <ul style={{ listStyle: "none", padding: "10px 15px", margin: 0 }}>
                           {news.slice(0, 15).map((n) => (
-                            <li key={n.id} style={{ marginBottom: "12px", lineHeight: "1.4" }}>
-                              <a href="/notices">
-                                {n.doe1 ? <span style={{ marginRight: "8px", color: "#666", fontSize: "0.9em" }}>{n.doe1}</span> : null}
+                            <li key={n.id} style={{ paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #e2e8f0", lineHeight: "1.4" }}>
+                              <a href="/notices" style={{ textDecoration: "none", color: "#1e293b", display: "block" }}>
                                 {n.title}
                               </a>
                             </li>
@@ -154,9 +153,8 @@ export default async function HomePage() {
                         </ul>
                         <ul style={{ listStyle: "none", padding: "10px 15px", margin: 0 }} aria-hidden="true">
                           {news.slice(0, 15).map((n) => (
-                            <li key={`${n.id}-dup`} style={{ marginBottom: "12px", lineHeight: "1.4" }}>
-                              <a href="/notices">
-                                {n.doe1 ? <span style={{ marginRight: "8px", color: "#666", fontSize: "0.9em" }}>{n.doe1}</span> : null}
+                            <li key={`${n.id}-dup`} style={{ paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #e2e8f0", lineHeight: "1.4" }}>
+                              <a href="/notices" style={{ textDecoration: "none", color: "#1e293b", display: "block" }}>
                                 {n.title}
                               </a>
                             </li>
@@ -166,9 +164,8 @@ export default async function HomePage() {
                     ) : (
                       <ul style={{ listStyle: "none", padding: "10px 15px", margin: 0 }}>
                         {news.map((n) => (
-                          <li key={n.id} style={{ marginBottom: "12px", lineHeight: "1.4" }}>
-                            <a href="/notices">
-                              {n.doe1 ? <span style={{ marginRight: "8px", color: "#666", fontSize: "0.9em" }}>{n.doe1}</span> : null}
+                          <li key={n.id} style={{ paddingBottom: "10px", marginBottom: "10px", borderBottom: "1px solid #e2e8f0", lineHeight: "1.4" }}>
+                            <a href="/notices" style={{ textDecoration: "none", color: "#1e293b", display: "block" }}>
                               {n.title}
                             </a>
                           </li>
