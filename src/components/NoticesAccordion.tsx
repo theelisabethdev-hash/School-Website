@@ -278,10 +278,12 @@ export default function NoticesAccordion({ notices }: { notices: NewsItem[] }) {
 
         /* ── Responsive ── */
         @media (max-width: 600px) {
-          .notice-header { padding: 13px 14px; }
+          .notice-header { padding: 12px; flex-wrap: wrap; gap: 8px; }
+          .notice-left { flex: 1 1 100%; }
+          .notice-right { width: 100%; justify-content: space-between; padding-left: 40px; }
           .notice-title  { font-size: 13.5px; }
-          .notice-date   { display: none; }
-          .notice-index  { width: 30px; height: 30px; font-size: 11px; }
+          .notice-date   { font-size: 11px; padding: 2px 8px; }
+          .notice-index  { width: 30px; height: 30px; font-size: 11px; flex-shrink: 0; }
           .notice-body--open .notice-body-inner { padding: 14px; }
         }
       `}</style>

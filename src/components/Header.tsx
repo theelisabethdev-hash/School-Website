@@ -180,7 +180,7 @@ export default function Header() {
             <div className="main_menu_area">
               <div className="mainmenu">
                 <nav style={{ display: "block" }}>
-                  <ul id="nav" style={{ fontSize: "8px" }}>
+                  <ul id="nav">
                     {/* Empty first li preserved from legacy markup for menu plugin compatibility */}
                     <li></li>
 

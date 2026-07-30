@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -6,6 +6,12 @@ import Footer from "@/components/Footer";
 import OwlInit from "@/components/OwlInit";
 import { site } from "@/lib/site";
 import { organizationJsonLd } from "@/lib/seo";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

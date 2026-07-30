@@ -1,13 +1,5 @@
 /*
-  The Elisabeth Gauba School — global styles.
-
-  The site's original look is preserved by loading the legacy stylesheets
-  (Bootstrap, style.css, MainMenu.css, News.css, ChooseUs.css, owl carousel,
-  font-awesome) directly from /public/css via <link> tags in layout.tsx.
-  We intentionally do NOT use Tailwind here so the original design renders
-  exactly as it did on the legacy site.
-
-  This file only holds tiny, non-visual helpers.
+  The Elisabeth Gauba School — global & mobile responsive styles.
 */
 
 @media (prefers-reduced-motion: reduce) {
@@ -16,5 +8,179 @@
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Base Viewport & Layout Guard against Horizontal Scroll Overflow */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Image Responsiveness */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Horizontal Scrolling for Data Tables on Mobile */
+.table-responsive,
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 15px;
+}
+
+table {
+  max-width: 100%;
+}
+
+/* Header & Navigation Mobile Adaptations */
+@media (max-width: 991px) {
+  .header.row {
+    padding: 10px 15px !important;
+    margin: 0 !important;
+  }
+
+  .header.row .col-xs-9 {
+    width: 75% !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+
+  .header.row .col-xs-3 {
+    width: 25% !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    margin-top: 10px !important;
+  }
+
+  /* Mobile Navigation Drawer & Touch Targets */
+  .Main-container .Main-bar {
+    min-height: 48px;
+    background: #214AB3 !important;
+  }
+
+  .Main-container a.MainMenu-reveal {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    top: 2px !important;
+    right: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 8px !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+    z-index: 999999 !important;
+  }
+
+  .Main-container a.MainMenu-reveal span {
+    width: 24px !important;
+    height: 3px !important;
+    margin-top: 0 !important;
+    background: #ffffff !important;
+    border-radius: 2px !important;
+  }
+
+  .Main-container .Main-nav {
+    margin-top: 48px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .Main-container .Main-nav ul li a {
+    font-size: 14px !important;
+    padding: 12px 18px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    color: #ffffff !important;
+  }
+
+  .Main-container .Main-nav ul li li a {
+    font-size: 13px !important;
+    padding-left: 32px !important;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Mobile Screens (Phones <= 768px) */
+@media (max-width: 768px) {
+  /* Admin Header Scaling on Mobile */
+  .header-logo-link {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .header-title {
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+  }
+
+  .header-subtitle {
+    font-size: 12px !important;
+  }
+
+  /* Form Controls: Minimum 16px Font Size to Prevent iOS Safari Auto-Zoom */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  input[type="date"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+
+  /* Form & Interactive Buttons Mobile Touch Spacing */
+  button,
+  .btn,
+  input[type="submit"] {
+    min-height: 44px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Footer Spacing on Mobile */
+  footer .agile_footer_grid {
+    margin-bottom: 24px;
+  }
+
+  footer .w3_address li a {
+    display: inline-block;
+    padding: 6px 0;
+  }
+}
+
+/* Extra Small Mobile Viewports (<= 480px) */
+@media (max-width: 480px) {
+  .header.row .col-xs-9 img {
+    max-height: 55px;
+    width: auto;
+  }
+
+  .header.row .col-xs-3 a i {
+    font-size: 24px !important;
+  }
+
+  h1, .h1 {
+    font-size: 22px !important;
+  }
+
+  h2, .h2 {
+    font-size: 18px !important;
+  }
+
+  h3, .h3 {
+    font-size: 16px !important;
   }
 }
