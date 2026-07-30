@@ -14,7 +14,11 @@ export const metadata: Metadata = {
     template: `%s — ${site.name}`,
   },
   description: site.description,
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: "/images/school-logo.jpg",
+    shortcut: "/images/school-logo.jpg",
+    apple: "/images/school-logo.jpg",
+  },
   robots: { index: true, follow: true },
 };
 
@@ -40,6 +44,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" type="image/jpeg" href="/images/school-logo.jpg" />
+        <link rel="shortcut icon" href="/images/school-logo.jpg" />
         <link
           href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i"
           rel="stylesheet"
