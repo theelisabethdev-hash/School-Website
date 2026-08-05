@@ -1,5 +1,5 @@
-import { pageMetadata, homeFaqs, faqJsonLd } from "@/lib/seo";
-import { getBanners, getNews, getGallery, DEFAULT_NEWS } from "@/lib/api";
+import { pageMetadata, faqJsonLd } from "@/lib/seo";
+import { getBanners, getNews, getGallery, getFaqs, DEFAULT_NEWS } from "@/lib/api";
 import AdmissionPopup from "@/components/AdmissionPopup";
 import HeroCarousel from "@/components/HeroCarousel";
 import FaqSection from "@/components/FaqSection";
@@ -18,10 +18,11 @@ const MARQUEE_HTML = `
 </marquee>`;
 
 export default async function HomePage() {
-  const [banners, rawNews, gallery] = await Promise.all([
+  const [banners, rawNews, gallery, faqsData] = await Promise.all([
     getBanners(),
     getNews(true),
     getGallery(),
+    getFaqs(),
   ]);
 
   const news = rawNews && rawNews.length > 0 ? rawNews : DEFAULT_NEWS;
@@ -32,6 +33,7 @@ export default async function HomePage() {
     .slice(0, 8);
 
   const heroImages = banners.map((b) => b.image);
+  const homeFaqs = faqsData?.home || [];
 
   return (
     <div id="body">

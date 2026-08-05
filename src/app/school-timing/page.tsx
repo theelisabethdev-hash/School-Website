@@ -1,6 +1,6 @@
-import { pageMetadata, timingFaqs, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { pageMetadata, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
-import { getSchoolTiming } from "@/lib/api";
+import { getSchoolTiming, getFaqs } from "@/lib/api";
 import FaqSection from "@/components/FaqSection";
 import SchoolTimingClient from "./SchoolTimingClient";
 
@@ -8,8 +8,8 @@ export const metadata = pageMetadata("/school-timing");
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const timing = await getSchoolTiming();
-  const faqs = timing.faqs && timing.faqs.length > 0 ? timing.faqs : timingFaqs;
+  const [timing, faqsData] = await Promise.all([getSchoolTiming(), getFaqs()]);
+  const faqs = faqsData?.schoolTiming || [];
 
   return (
     <div id="body">

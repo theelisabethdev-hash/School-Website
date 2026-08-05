@@ -331,6 +331,23 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="col-md-4 col-sm-6 col-xs-12" style={{ marginBottom: "20px" }}>
+          <div className="panel panel-primary" style={{ borderColor: "#34495e" }}>
+            <div className="panel-heading" style={{ background: "#34495e", borderColor: "#34495e" }}>
+              <h3 className="panel-title" style={{ fontWeight: "bold" }}>FAQs</h3>
+            </div>
+            <div className="panel-body" style={{ textAlign: "center", padding: "30px 15px" }}>
+              <div style={{ fontSize: "48px", margin: "10px 0", color: "#34495e" }}>
+                <i className="fa fa-question-circle" aria-hidden="true"></i>
+              </div>
+              <p style={{ color: "#777", marginBottom: "20px" }}>Manage Frequently Asked Questions for all pages.</p>
+              <a href="/admin/dashboard/faqs" className="btn btn-block" style={{ background: "#34495e", borderColor: "#34495e", color: "#fff" }}>
+                Manage FAQs
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-4 col-sm-6 col-xs-12" style={{ marginBottom: "20px" }}>
           <div className="panel panel-primary" style={{ borderColor: "#c0392b" }}>
             <div className="panel-heading" style={{ background: "#c0392b", borderColor: "#c0392b" }}>
               <h3 className="panel-title" style={{ fontWeight: "bold" }}>Academic Calendar</h3>

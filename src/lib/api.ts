@@ -69,6 +69,13 @@ export type FaqItem = {
   answer: string;
 };
 
+export type FaqsData = {
+  home?: FaqItem[];
+  admissions?: FaqItem[];
+  feeStructure?: FaqItem[];
+  schoolTiming?: FaqItem[];
+};
+
 export type SchoolTiming = {
   mainSchedule: string;
   officeHours: string;
@@ -204,6 +211,7 @@ export const getStaffCarousel = () => getJSON<StaffCarouselImage[]>("/staff/caro
 export const getCoCurricular = () => getJSON<CoCurricularItem[]>("/cocurricular", []);
 export const getFacilities = () => getJSON<FacilitiesItem[]>("/facilities", []);
 export const getSchoolTiming = () => getJSON<SchoolTiming>("/school-timing", DEFAULT_SCHOOL_TIMING);
+export const getFaqs = () => getJSON<FaqsData>("/faqs", {});
 
 export type AcademicCalendar = {
   pdfUrl: string;

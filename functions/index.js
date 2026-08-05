@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
@@ -12,7 +12,8 @@ const { getFirestore } = require('firebase-admin/firestore');
 admin.initializeApp();
 
 const db = getFirestore('schooldb');
-const bucket = admin.storage().bucket();
+const { getStorage } = require('firebase-admin/storage');
+const bucket = getStorage().bucket('the-elisabeth-gauba-scho-534b5.firebasestorage.app');
 
 const app = express();
 
@@ -733,10 +734,40 @@ app.get('/academic-calendar', async (req, res) => {
 });
 
 /* ==========================================================================
+   PUBLIC API ENDPOINTS
+   ========================================================================== */
+
+// Get FAQs
+app.get('/faqs', async (req, res) => {
+  try {
+    const doc = await db.collection('faqs').doc('main').get();
+    if (!doc.exists) {
+      return res.json({});
+    }
+    return res.json(doc.data());
+  } catch (error) {
+    console.error('Error fetching faqs:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+/* ==========================================================================
    ADMIN SECURE API ENDPOINTS (Require Authentication Middleware)
    ========================================================================== */
 
 app.use('/admin', authMiddleware);
+
+// Admin: Update FAQs
+app.put('/admin/faqs', async (req, res) => {
+  try {
+    const data = req.body;
+    await db.collection('faqs').doc('main').set(data, { merge: true });
+    return res.json({ success: true, message: 'FAQs updated successfully' });
+  } catch (error) {
+    console.error('Error updating faqs:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 // Admin: Get All Registrations
 app.get('/admin/registrations', authMiddleware, async (req, res) => {

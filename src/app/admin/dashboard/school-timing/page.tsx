@@ -20,7 +20,6 @@ type SchoolTiming = {
   noteSession: string;
   noteDussehra: string;
   noteFee: string;
-  faqs?: FaqItem[];
 };
 
 const DEFAULT: SchoolTiming = {
@@ -33,20 +32,6 @@ const DEFAULT: SchoolTiming = {
   noteDussehra:
     "There is a short break in October during the Dussehra period and a winter break in December-January.",
   noteFee: "Fee is to be paid for twelve months of the academic year.",
-  faqs: [
-    {
-      question: "What are the school timings at The Elisabeth Gauba School?",
-      answer: "Classes run Monday to Friday, 8:00 AM to 1:40 PM. Office hours are also 8:00 AM to 1:40 PM on all working days.",
-    },
-    {
-      question: "When can parents meet the teachers or the Principal?",
-      answer: "Parents can meet teachers by noting the reason in the almanac. The Principal can be met by prior appointment only.",
-    },
-    {
-      question: "What are the term dates and holidays for the academic year?",
-      answer: "The academic session runs from April to March. The school closes for summer vacation from mid-May to early July, with a short Dussehra break in October and a winter break in December–January.",
-    },
-  ],
 };
 
 export default function SchoolTimingAdminPage() {
@@ -74,7 +59,6 @@ export default function SchoolTimingAdminPage() {
           noteSession: data.noteSession ?? DEFAULT.noteSession,
           noteDussehra: data.noteDussehra ?? DEFAULT.noteDussehra,
           noteFee: data.noteFee ?? DEFAULT.noteFee,
-          faqs: data.faqs ?? DEFAULT.faqs,
         });
       }
     } catch (err) {
@@ -84,44 +68,8 @@ export default function SchoolTimingAdminPage() {
     }
   }
 
-  const handleChange = (field: Exclude<keyof SchoolTiming, "faqs">, value: string) => {
+  const handleChange = (field: keyof SchoolTiming, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleAddFaq = () => {
-    setForm((prev) => ({
-      ...prev,
-      faqs: [...(prev.faqs || []), { question: "", answer: "" }],
-    }));
-  };
-
-  const handleRemoveFaq = (index: number) => {
-    setForm((prev) => ({
-      ...prev,
-      faqs: (prev.faqs || []).filter((_, i) => i !== index),
-    }));
-  };
-
-  const handleFaqChange = (index: number, field: keyof FaqItem, value: string) => {
-    setForm((prev) => {
-      const newFaqs = [...(prev.faqs || [])];
-      newFaqs[index] = { ...newFaqs[index], [field]: value };
-      return { ...prev, faqs: newFaqs };
-    });
-  };
-
-  const handleMoveFaq = (index: number, direction: "up" | "down") => {
-    setForm((prev) => {
-      const newFaqs = [...(prev.faqs || [])];
-      const targetIndex = direction === "up" ? index - 1 : index + 1;
-      if (targetIndex < 0 || targetIndex >= newFaqs.length) return prev;
-      
-      const temp = newFaqs[index];
-      newFaqs[index] = newFaqs[targetIndex];
-      newFaqs[targetIndex] = temp;
-      
-      return { ...prev, faqs: newFaqs };
-    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -167,7 +115,7 @@ export default function SchoolTimingAdminPage() {
   }
 
   const fieldConfig: {
-    key: Exclude<keyof SchoolTiming, "faqs">;
+    key: keyof SchoolTiming;
     label: string;
     placeholder: string;
     multiline?: boolean;
@@ -344,141 +292,6 @@ export default function SchoolTimingAdminPage() {
           ))}
         </div>
 
-        {/* FAQs Section */}
-        <div className="row">
-          <div className="col-md-12" style={{ marginBottom: "20px" }}>
-            <div
-              className="panel panel-default"
-              style={{ border: "1px solid #e0e0e0", borderRadius: "6px", overflow: "hidden" }}
-            >
-              {/* Panel header */}
-              <div
-                className="panel-heading"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  background: "#fafafa",
-                  borderBottom: "1px solid #eee",
-                  padding: "12px 16px",
-                }}
-              >
-                <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <span
-                    style={{
-                      width: "32px",
-                      height: "32px",
-                      background: "#214AB3",
-                      borderRadius: "6px",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "#fff",
-                      fontSize: "14px",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <i className="fa fa-question-circle"></i>
-                  </span>
-                  <span style={{ fontWeight: "bold", fontSize: "15px", color: "#333" }}>
-                    Frequently Asked Questions (FAQs)
-                  </span>
-                </span>
-                <button
-                  type="button"
-                  className="btn btn-success btn-sm"
-                  onClick={handleAddFaq}
-                  style={{ background: "#27ae60", borderColor: "#27ae60", fontWeight: "bold" }}
-                >
-                  <i className="fa fa-plus"></i> Add FAQ
-                </button>
-              </div>
-
-              {/* Panel body */}
-              <div className="panel-body" style={{ padding: "16px" }}>
-                {form.faqs && form.faqs.length > 0 ? (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-                    {form.faqs.map((faq, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          border: "1px solid #eee",
-                          borderRadius: "6px",
-                          padding: "16px",
-                          background: "#fdfdfd",
-                          position: "relative",
-                        }}
-                      >
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
-                          <span style={{ fontWeight: "bold", color: "#214AB3" }}>FAQ #{index + 1}</span>
-                          <div style={{ display: "flex", gap: "5px" }}>
-                            <button
-                              type="button"
-                              className="btn btn-default btn-xs"
-                              onClick={() => handleMoveFaq(index, "up")}
-                              disabled={index === 0}
-                            >
-                              <i className="fa fa-arrow-up"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-default btn-xs"
-                              onClick={() => handleMoveFaq(index, "down")}
-                              disabled={index === (form.faqs?.length || 0) - 1}
-                            >
-                              <i className="fa fa-arrow-down"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-danger btn-xs"
-                              onClick={() => handleRemoveFaq(index)}
-                              style={{ background: "#d9534f", borderColor: "#d43f3a", color: "#fff" }}
-                            >
-                              <i className="fa fa-trash"></i> Remove
-                            </button>
-                          </div>
-                        </div>
-                        <div className="form-group" style={{ marginBottom: "10px" }}>
-                          <label style={{ fontSize: "13px", fontWeight: "bold", color: "#555", display: "block", marginBottom: "5px" }}>
-                            Question
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            value={faq.question}
-                            onChange={(e) => handleFaqChange(index, "question", e.target.value)}
-                            placeholder="e.g. What are the school timings?"
-                            required
-                            style={{ fontSize: "14px" }}
-                          />
-                        </div>
-                        <div className="form-group" style={{ marginBottom: 0 }}>
-                          <label style={{ fontSize: "13px", fontWeight: "bold", color: "#555", display: "block", marginBottom: "5px" }}>
-                            Answer
-                          </label>
-                          <textarea
-                            className="form-control"
-                            value={faq.answer}
-                            onChange={(e) => handleFaqChange(index, "answer", e.target.value)}
-                            placeholder="e.g. Classes run Monday to Friday..."
-                            rows={3}
-                            required
-                            style={{ resize: "vertical", fontSize: "14px" }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div style={{ textAlign: "center", padding: "20px", color: "#888" }}>
-                    <i className="fa fa-info-circle" style={{ fontSize: "20px", marginBottom: "10px", display: "block" }}></i>
-                    No FAQs added yet. Click "+ Add FAQ" to add one.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Submit Bar */}
         <div
