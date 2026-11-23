@@ -512,6 +512,17 @@ app.get('/registrations/:id', async (req, res) => {
   }
 });
 
+// Session used for form numbers when the submitted Academic Year is missing
+// or unrecognised.
+const DEFAULT_REG_SESSION = '2027-28';
+
+// "2027-2028" / "2027-28" / "2027 - 28" -> "2027-28"; anything else -> null.
+function toShortSession(academic) {
+  const m = String(academic || '').match(/^\s*(\d{4})\s*-\s*(\d{2}|\d{4})\s*$/);
+  if (!m) return null;
+  return `${m[1]}-${m[2].slice(-2)}`;
+}
+
 // 5. Submit Student Registration
 app.post('/register', upload.fields([
   { name: 'payement_image', maxCount: 1 },
@@ -536,18 +547,19 @@ app.post('/register', upload.fields([
       if (files.cert_copy) uploadedDocs.cert_copy = await uploadToStorage(files.cert_copy[0], 'registrations');
     }
 
-    // Get incremental registration/student ID
+    // Online form number, e.g. "ON001/2027-28". Numbering restarts at 001 for
+    // each academic session; the session comes from the form's Academic Year
+    // field ("2027-2028" -> "2027-28").
+    const session = toShortSession(data.academic) || DEFAULT_REG_SESSION;
     const statsRef = db.collection('settings').doc('registration_stats');
-    let studId = '000001';
-    
+    let studId = '';
+
     await db.runTransaction(async (transaction) => {
       const statsDoc = await transaction.get(statsRef);
-      let count = 1;
-      if (statsDoc.exists) {
-        count = (statsDoc.data().last_id || 0) + 1;
-      }
-      transaction.set(statsRef, { last_id: count }, { merge: true });
-      studId = String(count).padStart(6, '0');
+      const counters = (statsDoc.exists && statsDoc.data().form_counters) || {};
+      const count = (counters[session] || 0) + 1;
+      transaction.set(statsRef, { form_counters: { [session]: count } }, { merge: true });
+      studId = `ON${String(count).padStart(3, '0')}/${session}`;
     });
 
     const registrationData = {

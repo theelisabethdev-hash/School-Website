@@ -10,6 +10,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "/api";
 
 type OnlineRegistration = {
   id: string;
+  stud_id?: string;
   reg_class: string;
   academic: string;
   student_name: string;
@@ -133,6 +134,7 @@ export default function AdmissionsManagerPage() {
   const filteredOnline = onlineData.filter((r) =>
     r.student_name.toLowerCase().includes(search.toLowerCase()) ||
     r.father_name.toLowerCase().includes(search.toLowerCase()) ||
+    (r.stud_id || "").toLowerCase().includes(search.toLowerCase()) ||
     r.id.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -144,6 +146,7 @@ export default function AdmissionsManagerPage() {
 
   const handleExportOnlineExcel = () => {
     const exportData = onlineData.map(r => ({
+      "Form No": r.stud_id || "",
       "Registration ID": r.id,
       Class: r.reg_class,
       Session: r.academic,
@@ -262,7 +265,7 @@ export default function AdmissionsManagerPage() {
                   <table className="table table-striped table-bordered" style={{ margin: 0 }}>
                     <thead>
                       <tr style={{ background: "#f5f5f5" }}>
-                        <th>ID</th>
+                        <th>Form No</th>
                         <th>Student Name</th>
                         <th>Class</th>
                         <th>DOB</th>
@@ -283,7 +286,7 @@ export default function AdmissionsManagerPage() {
                       ) : (
                         filteredOnline.map((r) => (
                           <tr key={r.id}>
-                            <td><strong>{r.id.substring(0, 8)}</strong></td>
+                            <td><strong>{r.stud_id || r.id.substring(0, 8)}</strong></td>
                             <td><strong>{r.student_name}</strong></td>
                             <td>{r.reg_class} ({r.academic})</td>
                             <td>{r.studdob}</td>
@@ -399,6 +402,7 @@ export default function AdmissionsManagerPage() {
                   <h3 className="Main_header" style={{ margin: "0 0 10px 0", color: "#214AB3" }}>
                     {selectedOnline.student_name}
                   </h3>
+                  <p><strong>Form No:</strong> {selectedOnline.stud_id || "—"}</p>
                   <p><strong>Registration ID:</strong> {selectedOnline.id}</p>
                   <p><strong>Applying For:</strong> Class {selectedOnline.reg_class} ({selectedOnline.academic})</p>
                   <p><strong>Date of Birth:</strong> {selectedOnline.studdob} {selectedOnline.words_dob ? `(${selectedOnline.words_dob})` : ""}</p>
