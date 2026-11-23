@@ -12,7 +12,7 @@ export const metadata = pageMetadata("/");
 const MARQUEE_HTML = `
 <marquee behavior="alternate" scrolldelay="100" scrollamount="3" onmouseover="this.stop();" onmouseout="this.start();">
   <p class="fl_left">
-    <a href="#"><font style="text-shadow: 0 0 1px;">Rolling admissions against vacancies. Transfer cases accepted.</font></a>
+    <a href="#"><font style="text-shadow: 0 0 1px;">Registration process for Nursery admissions (2027-28) begins from 1st Dec., 2026.</font></a>
     <img width="33" height="16" src="/images/new_red.gif" alt="new" />&nbsp;
   </p>
 </marquee>`;
