@@ -1,12 +1,11 @@
 import type { NextConfig } from "next";
 
-
 // 301-redirect every legacy .html / .aspx URL to its new clean slug so we
 // keep the SEO value of the old, indexed URLs.
-// Inlined (not imported from src/lib/site) because next.config.ts is loaded at
-// runtime inside the Firebase SSR function, where src/ is not bundled —
-// importing it crashes the server with "Cannot find module ./src/lib/site".
-// Keep in sync with the `legacy` fields in src/lib/site.ts.
+// The source of truth for legacy URLs (firebase.json repeats most of them as
+// hosting redirects). Keep it in this file: next.config.ts is
+// loaded at runtime inside the Firebase SSR function, where src/ is not
+// bundled, so importing from src/ crashes the server.
 const LEGACY_URLS: [string, string[]][] = [
   ["/", ["/index.html"]],
   ["/about-us", ["/AboutUs.html", "/Welcome.html"]],

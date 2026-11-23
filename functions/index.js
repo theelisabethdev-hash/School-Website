@@ -513,16 +513,10 @@ app.get('/registrations/:id', async (req, res) => {
   }
 });
 
-// Session used for form numbers when the submitted Academic Year is missing
-// or unrecognised.
-const DEFAULT_REG_SESSION = '2027-28';
-
-// "2027-2028" / "2027-28" / "2027 - 28" -> "2027-28"; anything else -> null.
-function toShortSession(academic) {
-  const m = String(academic || '').match(/^\s*(\d{4})\s*-\s*(\d{2}|\d{4})\s*$/);
-  if (!m) return null;
-  return `${m[1]}-${m[2].slice(-2)}`;
-}
+// Academic session that online form numbers are issued for. The server owns
+// this value; the session the browser submits is stored but never used for
+// numbering. Change it when registration opens for the next session.
+const REG_SESSION = '2027-28';
 
 // 5. Submit Student Registration
 app.post('/register', upload.fields([
@@ -549,22 +543,12 @@ app.post('/register', upload.fields([
     }
 
     // Online form number, e.g. "ON001/2027-28". Numbering restarts at 001 for
-    // each academic session; the session comes from the form's Academic Year
-    // field ("2027-2028" -> "2027-28").
-    const session = toShortSession(data.academic) || DEFAULT_REG_SESSION;
+    // each session.
     const statsRef = db.collection('settings').doc('registration_stats');
+    const docRef = db.collection('registrations').doc();
     let studId = '';
 
-    await db.runTransaction(async (transaction) => {
-      const statsDoc = await transaction.get(statsRef);
-      const counters = (statsDoc.exists && statsDoc.data().form_counters) || {};
-      const count = (counters[session] || 0) + 1;
-      transaction.set(statsRef, { form_counters: { [session]: count } }, { merge: true });
-      studId = `ON${String(count).padStart(3, '0')}/${session}`;
-    });
-
     const registrationData = {
-      stud_id: studId,
       today_date: new Date().toLocaleDateString('en-GB'),
       reg_class: data.reg_class || '',
       academic: data.academic || '',
@@ -650,7 +634,16 @@ app.post('/register', upload.fields([
       timestamp: FieldValue.serverTimestamp()
     };
 
-    const docRef = await db.collection('registrations').add(registrationData);
+    // Increment the counter and save the registration in one transaction, so
+    // a failed save never uses up a form number.
+    await db.runTransaction(async (transaction) => {
+      const statsDoc = await transaction.get(statsRef);
+      const counters = (statsDoc.exists && statsDoc.data().form_counters) || {};
+      const count = (counters[REG_SESSION] || 0) + 1;
+      studId = `ON${String(count).padStart(3, '0')}/${REG_SESSION}`;
+      transaction.set(statsRef, { form_counters: { [REG_SESSION]: count } }, { merge: true });
+      transaction.set(docRef, { ...registrationData, stud_id: studId });
+    });
     
     return res.status(201).json({
       success: true,
