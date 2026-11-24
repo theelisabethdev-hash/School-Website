@@ -7,12 +7,13 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 
-const { getFirestore } = require('firebase-admin/firestore');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 
 admin.initializeApp();
 
 const db = getFirestore('schooldb');
 const { getStorage } = require('firebase-admin/storage');
+const { getAuth } = require('firebase-admin/auth');
 const bucket = getStorage().bucket('the-elisabeth-gauba-scho-534b5.firebasestorage.app');
 
 const app = express();
@@ -82,7 +83,7 @@ async function authMiddleware(req, res, next) {
 
   const token = authHeader.split('Bearer ')[1];
   try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
+    const decodedToken = await getAuth().verifyIdToken(token);
     req.user = decodedToken;
     next();
   } catch (error) {
@@ -267,7 +268,7 @@ app.get('/cocurricular', async (req, res) => {
       for (const item of defaults) {
         const docRef = await db.collection('cocurricular').add({
           ...item,
-          timestamp: admin.firestore.FieldValue.serverTimestamp()
+          timestamp: FieldValue.serverTimestamp()
         });
         items.push({ id: docRef.id, ...item });
       }
@@ -371,7 +372,7 @@ app.get('/facilities', async (req, res) => {
       for (const item of defaults) {
         const docRef = await db.collection('facilities').add({
           ...item,
-          timestamp: admin.firestore.FieldValue.serverTimestamp()
+          timestamp: FieldValue.serverTimestamp()
         });
         items.push({ id: docRef.id, ...item });
       }
@@ -512,6 +513,12 @@ app.get('/registrations/:id', async (req, res) => {
   }
 });
 
+// Academic session that online form numbers are issued for. The server owns
+// this value: it is stored as the registration's academic session and used for
+// numbering, and the session the browser submits is ignored. Change it when
+// registration opens for the next session.
+const REG_SESSION = '2027-28';
+
 // 5. Submit Student Registration
 app.post('/register', upload.fields([
   { name: 'payement_image', maxCount: 1 },
@@ -536,25 +543,16 @@ app.post('/register', upload.fields([
       if (files.cert_copy) uploadedDocs.cert_copy = await uploadToStorage(files.cert_copy[0], 'registrations');
     }
 
-    // Get incremental registration/student ID
+    // Online form number, e.g. "ON001/2027-28". Numbering restarts at 001 for
+    // each session.
     const statsRef = db.collection('settings').doc('registration_stats');
-    let studId = '000001';
-    
-    await db.runTransaction(async (transaction) => {
-      const statsDoc = await transaction.get(statsRef);
-      let count = 1;
-      if (statsDoc.exists) {
-        count = (statsDoc.data().last_id || 0) + 1;
-      }
-      transaction.set(statsRef, { last_id: count }, { merge: true });
-      studId = String(count).padStart(6, '0');
-    });
+    const docRef = db.collection('registrations').doc();
+    let studId = '';
 
     const registrationData = {
-      stud_id: studId,
       today_date: new Date().toLocaleDateString('en-GB'),
       reg_class: data.reg_class || '',
-      academic: data.academic || '',
+      academic: REG_SESSION,
       student_name: data.student_name || '',
       studdob: data.studdob || '',
       words_dob: data.words_dob || '',
@@ -634,10 +632,19 @@ app.post('/register', upload.fields([
       // Uploaded Document Links
       documents: uploadedDocs,
       doe: new Date().toLocaleDateString('en-GB'),
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
 
-    const docRef = await db.collection('registrations').add(registrationData);
+    // Increment the counter and save the registration in one transaction, so
+    // a failed save never uses up a form number.
+    await db.runTransaction(async (transaction) => {
+      const statsDoc = await transaction.get(statsRef);
+      const counters = (statsDoc.exists && statsDoc.data().form_counters) || {};
+      const count = (counters[REG_SESSION] || 0) + 1;
+      studId = `ON${String(count).padStart(3, '0')}/${REG_SESSION}`;
+      transaction.set(statsRef, { form_counters: { [REG_SESSION]: count } }, { merge: true });
+      transaction.set(docRef, { ...registrationData, stud_id: studId });
+    });
     
     return res.status(201).json({
       success: true,
@@ -679,7 +686,7 @@ app.post('/submit', upload.fields([
       document: uploadedDocs.document || '',
       documents: uploadedDocs,
       doe: new Date().toLocaleDateString('en-GB'),
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
 
     const docRef = await db.collection('submissions').add(submissionData);
@@ -708,7 +715,7 @@ app.post('/contact', async (req, res) => {
       subject: subject || '',
       message: message || '',
       read: false,
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     await db.collection('contacts').add(contactData);
 
@@ -825,7 +832,7 @@ app.post('/admin/vacancies', async (req, res) => {
       post: data.post || '',
       qualification: data.qualification || '',
       status: data.status || 'Open',
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     const docRef = await db.collection('vacancies').add(vacancyData);
     return res.status(201).json({ success: true, id: docRef.id });
@@ -982,7 +989,7 @@ app.post('/admin/activities', upload.array('images', 10), async (req, res) => {
       title: data.title || '',
       content: data.content || '',
       images: imageUrls,
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     
     const docRef = await db.collection('activities').add(activityData);
@@ -1067,7 +1074,7 @@ app.post('/admin/cocurricular', upload.array('images', 10), async (req, res) => 
       content: data.content || '',
       order: parseInt(data.order || '0'),
       images: imageUrls,
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     
     const docRef = await db.collection('cocurricular').add(itemData);
@@ -1153,7 +1160,7 @@ app.post('/admin/facilities', upload.array('images', 10), async (req, res) => {
       content: data.content || '',
       order: parseInt(data.order || '0'),
       images: imageUrls,
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     
     const docRef = await db.collection('facilities').add(itemData);
@@ -1235,7 +1242,7 @@ app.put('/admin/school-timing', async (req, res) => {
       noteDussehra: data.noteDussehra || '',
       noteFee: data.noteFee || '',
       faqs: Array.isArray(data.faqs) ? data.faqs : [],
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     };
     await db.collection('school_timing').doc('main').set(timingData, { merge: true });
     return res.json({ success: true, message: 'School timing updated successfully' });
@@ -1264,7 +1271,7 @@ app.post('/admin/society', upload.array('files', 10), async (req, res) => {
         type,
         name,
         images: imageUrls,
-        timestamp: admin.firestore.FieldValue.serverTimestamp()
+        timestamp: FieldValue.serverTimestamp()
       };
       const docRef = await db.collection('society').add(societyData);
       return res.status(201).json({ success: true, id: docRef.id });
@@ -1286,7 +1293,7 @@ app.post('/admin/society', upload.array('files', 10), async (req, res) => {
         name,
         url,
         sizeLabel,
-        timestamp: admin.firestore.FieldValue.serverTimestamp()
+        timestamp: FieldValue.serverTimestamp()
       };
       const docRef = await db.collection('society').add(societyData);
       return res.status(201).json({ success: true, id: docRef.id });
@@ -1372,7 +1379,7 @@ app.post('/admin/gallery', upload.array('images', 20), async (req, res) => {
       title: data.title || '',
       category: data.category || '',
       images: images,
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     
     const docRef = await db.collection('gallery').add(galleryData);
@@ -1456,7 +1463,7 @@ app.post('/admin/newsletters', async (req, res) => {
       title: data.title || '',
       subtitle: data.subtitle || '',
       content: data.content || '',
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     const docRef = await db.collection('newsletters').add(newsletterData);
     return res.status(201).json({ success: true, id: docRef.id });
@@ -1499,7 +1506,7 @@ app.post('/admin/members', async (req, res) => {
       email: data.email || '',
       contact: data.contact || '',
       status: data.status || 'Active',
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     const docRef = await db.collection('members').add(memberData);
     return res.status(201).json({ success: true, id: docRef.id });
@@ -1533,7 +1540,7 @@ app.post('/admin/staff', upload.single('image'), async (req, res) => {
       role: data.role || '',
       image: imageUrl,
       order: parseInt(data.order || '0'),
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     const docRef = await db.collection('staff').add(staffData);
     return res.status(201).json({ success: true, id: docRef.id });
@@ -1591,7 +1598,7 @@ app.post('/admin/staff/carousel', upload.single('image'), async (req, res) => {
     const carouselData = {
       image: imageUrl,
       order: parseInt(req.body.order || '0'),
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: FieldValue.serverTimestamp()
     };
     const docRef = await db.collection('staff_carousel').add(carouselData);
     return res.status(201).json({ success: true, id: docRef.id });

@@ -338,7 +338,7 @@ export default function RegistrationForm() {
           Your registration has been submitted successfully
           {studId && (
             <>
-              . Your registration number is <strong>{studId}</strong>
+              . Your form number is <strong>{studId}</strong>. Please quote it in all future communication
             </>
           )}
           . We will contact you soon.
@@ -422,7 +422,7 @@ export default function RegistrationForm() {
                   <input
                     name="academic"
                     type="text"
-                    value="2026-2027"
+                    value="2027-28"
                     readOnly
                     className="form-control"
                   />
