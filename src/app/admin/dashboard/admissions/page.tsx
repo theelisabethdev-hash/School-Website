@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { getAuth } from "firebase/auth";
 import { app } from "@/lib/firebase";
 import { exportToCSV } from "@/lib/export";
@@ -71,7 +71,6 @@ function useAdmissions() {
 }
 
 function AdmissionsPage() {
-  const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
   const [state, reload] = useAdmissions();
@@ -86,35 +85,29 @@ function AdmissionsPage() {
   // The input keeps its own copy so typing never waits on the router.
   const [query, setQuery] = useState(urlQuery);
 
-  // Query strings sent to router.replace that useSearchParams has not shown yet.
-  // window.location lags these, so update() builds on the newest one instead.
-  const inflight = useRef<string[]>([]);
-  const paramsKey = params.toString();
-  useEffect(() => {
-    const i = inflight.current.indexOf(paramsKey);
-    if (i >= 0) {
-      inflight.current = inflight.current.slice(i + 1);
-      return;
-    }
-    // Not one of ours (back/forward): the URL wins.
-    inflight.current = [];
-    setQuery(new URLSearchParams(paramsKey).get("q") ?? "");
-  }, [paramsKey]);
+  // The URL changed without us typing (back/forward): show its search.
+  const [seenUrlQuery, setSeenUrlQuery] = useState(urlQuery);
+  if (urlQuery !== seenUrlQuery) {
+    setSeenUrlQuery(urlQuery);
+    if (urlQuery.trim() !== query.trim()) setQuery(urlQuery);
+  }
 
+  // history.replaceState, not router.replace: on the production build the
+  // router ignored search-only changes to this static page when it was opened
+  // with ?open=, so the drawer could not be closed. Next.js syncs
+  // useSearchParams with replaceState, and window.location updates at once,
+  // so back-to-back updates never drop a param.
   const update = useCallback(
     (patch: Record<string, string | null>) => {
-      const next = new URLSearchParams(inflight.current.at(-1) ?? window.location.search);
-      const before = next.toString();
+      const next = new URLSearchParams(window.location.search);
       for (const [k, v] of Object.entries(patch)) {
         if (v) next.set(k, v);
         else next.delete(k);
       }
       const qs = next.toString();
-      if (qs === before) return;
-      inflight.current.push(qs);
-      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+      window.history.replaceState(null, "", qs ? `${pathname}?${qs}` : pathname);
     },
-    [router, pathname],
+    [pathname],
   );
 
   const ready = state.status === "ready";
