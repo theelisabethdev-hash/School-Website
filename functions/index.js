@@ -12,7 +12,7 @@ const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 admin.initializeApp();
 
 const db = getFirestore('schooldb');
-const { getStorage } = require('firebase-admin/storage');
+const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 const { getAuth } = require('firebase-admin/auth');
 const bucket = getStorage().bucket('the-elisabeth-gauba-scho-534b5.firebasestorage.app');
 
@@ -66,12 +66,12 @@ async function uploadToStorage(file, folder = 'documents') {
   const fileRef = bucket.file(uniqueName);
   
   await fileRef.save(file.buffer, {
-    metadata: { contentType: file.mimetype },
-    public: true
+    metadata: { contentType: file.mimetype }
   });
   
-  // Return the public URL
-  return `https://storage.googleapis.com/${bucket.name}/${uniqueName}`;
+  const url = await getDownloadURL(fileRef);
+  
+  return url;
 }
 
 // Middleware to verify Firebase Auth ID Token for admin routes
@@ -115,11 +115,28 @@ app.get('/banners', async (req, res) => {
 app.get('/news', async (req, res) => {
   try {
     const homepageOnly = req.query.homepage === '1';
-    const query = db.collection('news').orderBy('doe1', 'desc');
+    const query = db.collection('news').orderBy('doe1', 'asc');
     const snapshot = await query.get();
     let allNews = [];
     snapshot.forEach(doc => {
       allNews.push({ id: doc.id, ...doc.data() });
+    });
+    allNews.sort((a, b) => {
+      const getTime = (item) => {
+        if (item && item.doe1) {
+          const t = new Date(item.doe1).getTime();
+          if (!isNaN(t)) return t;
+        }
+        if (item && item.doe) {
+          const parts = item.doe.split("/");
+          if (parts.length === 3) {
+            const t = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`).getTime();
+            if (!isNaN(t)) return t;
+          }
+        }
+        return 0;
+      };
+      return getTime(a) - getTime(b);
     });
     let news = allNews;
     if (homepageOnly) {
@@ -1651,11 +1668,10 @@ app.post('/admin/academic-calendar', upload.single('pdf'), async (req, res) => {
     const fileRef = bucket.file(uniqueName);
     
     await fileRef.save(req.file.buffer, {
-      metadata: { contentType: req.file.mimetype },
-      public: true
+      metadata: { contentType: req.file.mimetype }
     });
     
-    const pdfUrl = `https://storage.googleapis.com/${bucket.name}/${uniqueName}`;
+    const pdfUrl = await getDownloadURL(fileRef);
     
     const calendarData = {
       pdfUrl,
