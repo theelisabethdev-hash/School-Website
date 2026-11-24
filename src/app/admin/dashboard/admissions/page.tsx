@@ -86,14 +86,32 @@ function AdmissionsPage() {
   // The input keeps its own copy so typing never waits on the router.
   const [query, setQuery] = useState(urlQuery);
 
+  // Query strings sent to router.replace that useSearchParams has not shown yet.
+  // window.location lags these, so update() builds on the newest one instead.
+  const inflight = useRef<string[]>([]);
+  const paramsKey = params.toString();
+  useEffect(() => {
+    const i = inflight.current.indexOf(paramsKey);
+    if (i >= 0) {
+      inflight.current = inflight.current.slice(i + 1);
+      return;
+    }
+    // Not one of ours (back/forward): the URL wins.
+    inflight.current = [];
+    setQuery(new URLSearchParams(paramsKey).get("q") ?? "");
+  }, [paramsKey]);
+
   const update = useCallback(
     (patch: Record<string, string | null>) => {
-      const next = new URLSearchParams(window.location.search);
+      const next = new URLSearchParams(inflight.current.at(-1) ?? window.location.search);
+      const before = next.toString();
       for (const [k, v] of Object.entries(patch)) {
         if (v) next.set(k, v);
         else next.delete(k);
       }
       const qs = next.toString();
+      if (qs === before) return;
+      inflight.current.push(qs);
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     },
     [router, pathname],
