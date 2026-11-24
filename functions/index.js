@@ -514,8 +514,9 @@ app.get('/registrations/:id', async (req, res) => {
 });
 
 // Academic session that online form numbers are issued for. The server owns
-// this value; the session the browser submits is stored but never used for
-// numbering. Change it when registration opens for the next session.
+// this value: it is stored as the registration's academic session and used for
+// numbering, and the session the browser submits is ignored. Change it when
+// registration opens for the next session.
 const REG_SESSION = '2027-28';
 
 // 5. Submit Student Registration
@@ -551,7 +552,7 @@ app.post('/register', upload.fields([
     const registrationData = {
       today_date: new Date().toLocaleDateString('en-GB'),
       reg_class: data.reg_class || '',
-      academic: data.academic || '',
+      academic: REG_SESSION,
       student_name: data.student_name || '',
       studdob: data.studdob || '',
       words_dob: data.words_dob || '',
