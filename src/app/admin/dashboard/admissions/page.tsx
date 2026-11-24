@@ -286,7 +286,7 @@ export default function AdmissionsManagerPage() {
                       ) : (
                         filteredOnline.map((r) => (
                           <tr key={r.id}>
-                            <td><strong>{r.stud_id || r.id.substring(0, 8)}</strong></td>
+                            <td><strong>{r.stud_id || "—"}</strong></td>
                             <td><strong>{r.student_name}</strong></td>
                             <td>{r.reg_class} ({r.academic})</td>
                             <td>{r.studdob}</td>
