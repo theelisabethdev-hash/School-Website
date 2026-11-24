@@ -71,7 +71,7 @@ export function Drawer({ heading, name, meta, position, onPrev, onNext, onClose,
     <>
       <div className={s.backdrop} onClick={onClose} />
       <div ref={ref} className={s.drawer} role="dialog" aria-modal="true" aria-labelledby={labelId} data-print-region="drawer">
-        <header className={s.head}>
+        <div className={s.head}>
           <div className={s.headText}>
             <h2 id={labelId} className={s.headForm}>
               {heading}
@@ -94,7 +94,7 @@ export function Drawer({ heading, name, meta, position, onPrev, onNext, onClose,
               <i className="fa fa-times" aria-hidden="true" />
             </button>
           </div>
-        </header>
+        </div>
         <div className={s.body}>{children}</div>
       </div>
     </>,

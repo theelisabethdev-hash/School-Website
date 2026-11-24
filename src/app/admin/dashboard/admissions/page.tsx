@@ -186,7 +186,7 @@ function AdmissionsPage() {
     <div className={s.page}>
       <PrintStyles />
 
-      <header className={`${s.header} ${s.noPrint}`}>
+      <div className={`${s.header} ${s.noPrint}`}>
         <div>
           <h2 className="Main_header">Admissions</h2>
           <p className={s.lead}>{session ? `Registrations for ${session} and uploaded forms.` : "Online registrations and uploaded forms."}</p>
@@ -199,7 +199,7 @@ function AdmissionsPage() {
             <i className="fa fa-print" aria-hidden="true" /> Print list
           </button>
         </div>
-      </header>
+      </div>
 
       <div className={`${s.tabs} ${s.noPrint}`} role="group" aria-label="Admission records">
         {(["online", "uploads"] as const).map((t) => (
@@ -218,7 +218,7 @@ function AdmissionsPage() {
               className={s.input}
               type="text"
               value={query}
-              placeholder={online ? "Search form no., student, parent, phone or email" : "Search parent, phone, email or transaction ID"}
+              placeholder={online ? "Search form no., name, phone or email" : "Search parent, phone or transaction ID"}
               aria-label="Search"
               onChange={(e) => onQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Escape" && query && onQuery("")}

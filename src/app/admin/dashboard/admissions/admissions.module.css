@@ -15,6 +15,7 @@
   color: var(--text);
   font-size: 14px;
   line-height: 1.45;
+  letter-spacing: normal;
 }
 
 .page *,
@@ -23,10 +24,17 @@
   box-sizing: border-box;
 }
 
+/* style.css sets letter-spacing on p, h3 and h4; only the page title keeps it. */
+.page *:not(h2),
+.drawer * {
+  letter-spacing: normal;
+}
+
 /* ---------- Header ---------- */
 
 .header {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: flex-end;
   gap: 16px;
@@ -468,7 +476,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: 2000;
+  z-index: 1000000; /* site header uses 999999 */
   background: rgba(23, 53, 131, 0.35);
 }
 
@@ -477,7 +485,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 2001;
+  z-index: 1000001;
   display: flex;
   flex-direction: column;
   width: min(640px, 100vw);
@@ -485,6 +493,7 @@
   color: var(--text);
   font-size: 14px;
   line-height: 1.45;
+  letter-spacing: normal;
   box-shadow: -8px 0 28px rgba(23, 53, 131, 0.2);
   animation: slideIn 180ms ease-out;
   --ink: #214ab3;
@@ -649,7 +658,7 @@
 
 .dlStack dt {
   font-size: 13px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .dlStack dt:first-child {
@@ -744,6 +753,10 @@
 /* ---------- Phones ---------- */
 
 @media screen and (max-width: 767px) {
+  .page {
+    padding: 0 16px;
+  }
+
   .header {
     align-items: flex-start;
   }
@@ -768,7 +781,7 @@
   .tab {
     flex: 1;
     justify-content: center;
-    padding: 0 8px;
+    padding: 0 6px;
   }
 
   .toolbarRow {
@@ -846,6 +859,37 @@
   .cDate {
     grid-area: date;
     text-align: right;
+  }
+
+  .uploads tr {
+    grid-template-areas:
+      "name date"
+      "contact contact"
+      "txn txn"
+      "files files";
+  }
+
+  .uName {
+    grid-area: name;
+  }
+  .uContact {
+    grid-area: contact;
+  }
+  .uTxn {
+    grid-area: txn;
+  }
+  .uFiles {
+    grid-area: files;
+  }
+  .uDate {
+    grid-area: date;
+    text-align: right;
+  }
+
+  .tab {
+    white-space: nowrap;
+    font-size: 13px;
+    gap: 6px;
   }
 
   .skelRow {

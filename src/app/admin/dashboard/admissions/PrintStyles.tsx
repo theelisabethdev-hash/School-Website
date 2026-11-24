@@ -22,6 +22,9 @@ export function PrintStyles() {
         body[data-print] {
           overflow: visible !important;
         }
+        body[data-print] a[href]::after {
+          content: none !important;
+        }
         body[data-print] * {
           visibility: hidden;
         }

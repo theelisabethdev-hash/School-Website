@@ -48,7 +48,7 @@ export function Section({
   );
 }
 
-export function Tel({ value }: { value?: string }) {
+export function telLink(value?: string) {
   if (!has(value)) return undefined;
   return (
     <a className={s.link} href={`tel:${value.replace(/[^\d+]/g, "")}`}>
@@ -57,7 +57,7 @@ export function Tel({ value }: { value?: string }) {
   );
 }
 
-export function Mail({ value }: { value?: string }) {
+export function mailLink(value?: string) {
   if (!has(value)) return undefined;
   return (
     <a className={s.link} href={`mailto:${value}`}>

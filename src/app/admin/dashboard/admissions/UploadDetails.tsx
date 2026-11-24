@@ -1,5 +1,5 @@
-import { type FormUpload, formatIsoDateTime, formatDateTime, submittedAt } from "./model";
-import { CopyValue, DocRow, Mail, Section, Tel } from "./DetailParts";
+import { type FormUpload, formatIsoDateTime, formatDateTime, has, submittedAt } from "./model";
+import { CopyValue, DocRow, Section, mailLink, telLink } from "./DetailParts";
 
 export function UploadDetails({ u }: { u: FormUpload }) {
   const at = submittedAt(u);
@@ -8,14 +8,14 @@ export function UploadDetails({ u }: { u: FormUpload }) {
       <Section
         title="Contact"
         rows={[
-          ["Email", <Mail key="e" value={u.per_email} />],
-          ["Mobile", <Tel key="m" value={u.per_mobile} />],
+          ["Email", mailLink(u.per_email)],
+          ["Mobile", telLink(u.per_mobile)],
         ]}
       />
       <Section
         title="Payment"
         rows={[
-          ["Transaction ID", <CopyValue key="t" value={u.trans_id} />],
+          ["Transaction ID", has(u.trans_id) ? <CopyValue value={u.trans_id} /> : undefined],
           ["Paid on", formatIsoDateTime(u.per_date_time)],
           ["Submitted", at ? formatDateTime(at) : undefined],
         ]}
