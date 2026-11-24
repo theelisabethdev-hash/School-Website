@@ -2,6 +2,7 @@
  * Print works by hiding the whole document and showing one region. The site
  * header and nav live outside this page, so the rule has to be global.
  * `printScope` sets `data-print` on <body> for the length of the print dialog.
+ * Without it (the browser's own Print), the list region prints.
  */
 export type PrintScope = "list" | "drawer";
 
@@ -19,22 +20,22 @@ export function PrintStyles() {
   return (
     <style jsx global>{`
       @media print {
-        body[data-print] {
+        body {
           overflow: visible !important;
         }
-        body[data-print] a[href]::after {
+        body a[href]::after {
           content: none !important;
         }
-        body[data-print] * {
+        body * {
           visibility: hidden;
         }
-        body[data-print="list"] [data-print-region="list"],
-        body[data-print="list"] [data-print-region="list"] *,
+        body:not([data-print="drawer"]) [data-print-region="list"],
+        body:not([data-print="drawer"]) [data-print-region="list"] *,
         body[data-print="drawer"] [data-print-region="drawer"],
         body[data-print="drawer"] [data-print-region="drawer"] * {
           visibility: visible;
         }
-        body[data-print="list"] [data-print-region="list"] {
+        body:not([data-print="drawer"]) [data-print-region="list"] {
           position: absolute;
           left: 0;
           top: 0;
