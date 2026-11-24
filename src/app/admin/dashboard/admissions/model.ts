@@ -65,7 +65,7 @@ export type Registration = {
   trans_id?: string;
   per_date_time?: string;
   doe?: string;
-  timestamp?: { _seconds: number };
+  timestamp?: { _seconds: number; _nanoseconds?: number };
 };
 
 export type FormUpload = {
@@ -79,7 +79,7 @@ export type FormUpload = {
   payement_image?: string;
   document?: string;
   doe?: string;
-  timestamp?: { _seconds: number };
+  timestamp?: { _seconds: number; _nanoseconds?: number };
 };
 
 export type LoadState =
@@ -131,7 +131,7 @@ export function currentSession(regs: Registration[]): string {
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-type Stamped = { timestamp?: { _seconds: number }; doe?: string };
+type Stamped = { timestamp?: { _seconds: number; _nanoseconds?: number }; doe?: string };
 
 /** The API serialises Firestore timestamps as { _seconds }. Falls back to doe ("dd/mm/yyyy"). */
 export function submittedAt(r: Stamped): Date | null {
@@ -226,7 +226,12 @@ export const matchesUpload = (u: FormUpload, query: string) =>
 
 type Cmp<T> = (a: T, b: T) => number;
 
-const time = (r: Stamped) => submittedAt(r)?.getTime() ?? null;
+// Milliseconds with the sub-millisecond part kept, so records saved within the
+// same second still sort in submission order.
+const time = (r: Stamped) =>
+  typeof r.timestamp?._seconds === "number"
+    ? r.timestamp._seconds * 1000 + (r.timestamp._nanoseconds ?? 0) / 1e6
+    : (submittedAt(r)?.getTime() ?? null);
 
 /** Newest first, records without a date last. */
 function byTime(dir: 1 | -1): Cmp<Stamped> {
