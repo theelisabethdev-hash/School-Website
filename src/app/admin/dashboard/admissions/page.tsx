@@ -152,6 +152,7 @@ function AdmissionsPage() {
     requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-row-id="${CSS.escape(openId ?? "")}"]`)?.focus());
   };
   const step = (delta: number) => {
+    if (openIndex < 0) return;
     const id = ids[openIndex + delta];
     if (id) update({ open: id });
   };
