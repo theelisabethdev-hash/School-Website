@@ -125,7 +125,8 @@ function AdmissionsPage() {
 
   const ids = visible.map((x) => x.id);
   const openIndex = openId ? ids.indexOf(openId) : -1;
-  const openRecord = openId ? (online ? registrations : uploads).find((x) => x.id === openId) : undefined;
+  const openReg = online && openId ? registrations.find((x) => x.id === openId) : undefined;
+  const openUpload = !online && openId ? uploads.find((x) => x.id === openId) : undefined;
 
   const openRow = (id: string) => update({ open: id });
   const closeDrawer = () => {
@@ -268,19 +269,14 @@ function AdmissionsPage() {
         {content}
       </div>
 
-      {openRecord && online && (
-        <Drawer
-          {...drawerCommon}
-          heading={(openRecord as Registration).stud_id || "No form number"}
-          name={(openRecord as Registration).student_name}
-          meta={`${classLabel((openRecord as Registration).reg_class)}, ${(openRecord as Registration).academic}`}
-        >
-          <RegistrationDetails r={openRecord as Registration} />
+      {openReg && (
+        <Drawer {...drawerCommon} heading={openReg.stud_id || "No form number"} name={openReg.student_name} meta={`${classLabel(openReg.reg_class)}, ${openReg.academic}`}>
+          <RegistrationDetails r={openReg} />
         </Drawer>
       )}
-      {openRecord && !online && (
-        <Drawer {...drawerCommon} heading={(openRecord as FormUpload).per_name} meta="Uploaded registration form">
-          <UploadDetails u={openRecord as FormUpload} />
+      {openUpload && (
+        <Drawer {...drawerCommon} heading={openUpload.per_name} meta="Uploaded registration form">
+          <UploadDetails u={openUpload} />
         </Drawer>
       )}
     </div>
