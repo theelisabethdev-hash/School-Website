@@ -23,7 +23,7 @@ export default function AdmissionPopup() {
       >
         &times;
       </button>
-      <img src="/images/admission.jpeg" alt="Admission Notice" />
+      <img src="/images/admission-2027-28.jpg" alt="Admissions open for 2027-28: Nursery, LKG, UKG and Class I. Forms available offline and online from 1 December 2026." />
 
       <style>{`
         .egs-admission-popup {
