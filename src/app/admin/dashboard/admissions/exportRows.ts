@@ -43,8 +43,8 @@ export const uploadRows = (rows: FormUpload[]) =>
     "Transaction ID": u.trans_id,
     "Transaction Time": u.per_date_time,
     Submitted: stamp(u),
-    "Registration Form PDF": u.pdf_doc ? "Yes" : "No",
-    "Payment Receipt": u.payement_image ? "Yes" : "No",
-    "Supporting Document": u.document ? "Yes" : "No",
+    "Registration Form PDF": u.pdf_doc || "None",
+    "Payment Receipt": u.payement_image || "None",
+    "Supporting Doc": u.document || "None",
     "Submission ID": u.id,
   }));
