@@ -1409,10 +1409,19 @@ export default function RegistrationForm() {
                   className="btn btn-primary"
                   style={{ marginTop: 10 }}
                   onClick={() => {
-                    if (validateForm()) {
-                      setPage("payment");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    if (!validateForm()) return;
+                    // The browser also checks every required/typed field when the form is
+                    // submitted, but by then page 1 is hidden: it can't show its message and
+                    // Submit silently does nothing. Catch those fields while they're visible.
+                    const invalid = formRef.current?.querySelector<HTMLInputElement>(
+                      "#reg-block1 input:invalid, #reg-block1 select:invalid, #reg-block1 textarea:invalid",
+                    );
+                    if (invalid) {
+                      invalid.reportValidity();
+                      return;
                     }
+                    setPage("payment");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                 >
                   Continue For Payment
