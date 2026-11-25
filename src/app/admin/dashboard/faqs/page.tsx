@@ -308,7 +308,7 @@ export default function FaqsAdminPage() {
                             className="form-control"
                             value={faq.answer}
                             onChange={(e) => handleFaqChange(activeSection, index, "answer", e.target.value)}
-                            placeholder="e.g. Nursery: 3+ and below 4 years..."
+                            placeholder="e.g. Nursery: 3+ and upto 4 years..."
                             rows={3}
                             required
                             style={{ resize: "vertical", fontSize: "14px" }}

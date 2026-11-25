@@ -140,7 +140,7 @@ export const homeFaqs: FaqItem[] = [
   {
     question: "What is the age criteria for admission?",
     answer:
-      "For 2027-28, as on 31st March 2027: Nursery 3+ and below 4 years; LKG 4+ and below 5 years; UKG 5+ and below 6 years; Class I 6+ and below 7 years. Admission to higher classes depends on vacancies.",
+      "For 2027-28, as on 31st March 2027: Nursery 3+ and upto 4 years; LKG 4+ and upto 5 years; UKG 5+ and upto 6 years; Class I 6+ and upto 7 years. Admission to higher classes depends on vacancies.",
   },
   {
     question: "What are the school timings?",
@@ -183,7 +183,7 @@ export const admissionsFaqs: FaqItem[] = [
   {
     question: "What is the age criteria for admission?",
     answer:
-      "For 2027-28, as on 31st March 2027: Nursery 3+ and below 4 years; LKG 4+ and below 5 years; UKG 5+ and below 6 years; Class I 6+ and below 7 years. Admission to higher classes depends on vacancies.",
+      "For 2027-28, as on 31st March 2027: Nursery 3+ and upto 4 years; LKG 4+ and upto 5 years; UKG 5+ and upto 6 years; Class I 6+ and upto 7 years. Admission to higher classes depends on vacancies.",
   },
   {
     question: "Is admission to higher classes (above Class I) available?",
