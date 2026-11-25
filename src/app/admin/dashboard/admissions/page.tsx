@@ -22,6 +22,7 @@ import {
 } from "./model";
 import { registrationRows, uploadRows } from "./exportRows";
 import { Drawer } from "./Drawer";
+import { buildApplicationPdf } from "./applicationPdf";
 import { PrintStyles, printScope } from "./PrintStyles";
 import { RegistrationDetails } from "./RegistrationDetails";
 import { RegistrationsTable } from "./RegistrationsTable";
@@ -160,6 +161,30 @@ function AdmissionsPage() {
     update({ q: null, class: null });
   };
 
+  const [printingId, setPrintingId] = useState<string | null>(null);
+  const printApplication = async (r: Registration) => {
+    setPrintingId(r.id);
+    try {
+      const bytes = await buildApplicationPdf(r);
+      const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: "application/pdf" }));
+      const tab = window.open(url);
+      if (tab) tab.onload = () => tab.print();
+      else {
+        // Popup blocked: download the file instead.
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${(r.stud_id || r.student_name || "application").replace(/[\\/\s]+/g, "-")}.pdf`;
+        a.click();
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch (err) {
+      console.error("Print generation error:", err);
+      alert("Couldn't prepare the form. Please try again.");
+    } finally {
+      setPrintingId(null);
+    }
+  };
+
   const exportCsv = () =>
     online ? exportToCSV(registrationRows(visibleRegs), "online_registrations") : exportToCSV(uploadRows(visibleUploads), "uploaded_registration_forms");
 
@@ -282,7 +307,11 @@ function AdmissionsPage() {
       </div>
 
       {openReg && (
-        <Drawer {...drawerCommon} heading={openReg.stud_id || "No form number"} name={openReg.student_name} meta={`${classLabel(openReg.reg_class)}, ${openReg.academic}`}>
+        <Drawer
+          {...drawerCommon}
+          onPrint={() => printApplication(openReg)}
+          printing={printingId === openReg.id}
+          heading={openReg.stud_id || "No form number"} name={openReg.student_name} meta={`${classLabel(openReg.reg_class)}, ${openReg.academic}`}>
           <RegistrationDetails r={openReg} />
         </Drawer>
       )}

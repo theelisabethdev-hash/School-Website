@@ -14,6 +14,9 @@ type Props = {
   onPrev: () => void;
   onNext: () => void;
   onClose: () => void;
+  /** Replaces the browser print of the drawer, e.g. with the filled offline form. */
+  onPrint?: () => void;
+  printing?: boolean;
   children: ReactNode;
 };
 
@@ -22,7 +25,7 @@ const FOCUSABLE = 'a[href], button:not(:disabled), input, select, textarea, [tab
 const typing = (el: EventTarget | null) =>
   el instanceof HTMLElement && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
 
-export function Drawer({ heading, name, meta, position, onPrev, onNext, onClose, children }: Props) {
+export function Drawer({ heading, name, meta, position, onPrev, onNext, onClose, onPrint, printing, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const handlers = useRef({ onPrev, onNext, onClose });
@@ -80,8 +83,8 @@ export function Drawer({ heading, name, meta, position, onPrev, onNext, onClose,
             {meta && <p className={s.headMeta}>{meta}</p>}
           </div>
           <div className={s.headActions}>
-            <button type="button" className={`${s.btn} ${s.btnSmall}`} onClick={() => printScope("drawer")}>
-              <i className="fa fa-print" aria-hidden="true" /> Print application
+            <button type="button" className={`${s.btn} ${s.btnSmall}`} onClick={onPrint ?? (() => printScope("drawer"))} disabled={printing}>
+              <i className={`fa ${printing ? "fa-spinner fa-spin" : "fa-print"}`} aria-hidden="true" /> {printing ? "Preparing form…" : "Print application"}
             </button>
             {position && <span className={s.position}>{position.index} of {position.total}</span>}
             <button type="button" className={s.iconBtn} onClick={onPrev} disabled={!position || position.index <= 1} aria-label="Previous registration" title="Previous (Up arrow or k)">
