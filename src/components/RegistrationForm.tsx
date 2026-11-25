@@ -249,7 +249,7 @@ export default function RegistrationForm() {
       const { after, onOrBefore } = dobWindow(rule.min, rule.max);
       if (!(dob > after && dob <= onOrBefore)) {
         alert(
-          `For ${rule.label}, the child must be ${rule.min}+ and below ${rule.max} years as on ${AGE_ON.label}, ` +
+          `For ${rule.label}, the child must be ${rule.min}+ and upto ${rule.max} years as on ${AGE_ON.label}, ` +
             `i.e. born between ${ddmmyyyy(dayAfter(after))} and ${ddmmyyyy(onOrBefore)}.`,
         );
         dobRef.current?.focus();
