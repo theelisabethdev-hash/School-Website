@@ -82,8 +82,9 @@ export async function buildApplicationPdf(r: Registration): Promise<Uint8Array> 
     page.drawText(d, { x: (x1 + x2) / 4 - w / 2, y: height - (y1 + y2) / 4 - 5 + 1, size: 10, font, color: BLACK });
   };
 
-  // Page 1: class, student, parents' names.
+  // Page 1: form number, class, student, parents' names.
   const p1 = pages[0];
+  text(p1, 224, 481, r.stud_id, 124, 10); // inside the "Form No:" box (x 213-358, y 447-500)
   text(p1, 365, 668, `${r.reg_class || ""}${r.academic ? ` (${r.academic})` : ""}`, 700);
   text(p1, 615, 750, r.student_name, 460);
   const dob = /^(\d{4})-(\d{2})-(\d{2})$/.exec(r.studdob || "");
