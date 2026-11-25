@@ -95,7 +95,8 @@ export function organizationJsonLd() {
       name: "Grades Offered",
       itemListElement: [
         { name: "Nursery", programType: "Pre-Primary" },
-        { name: "Kindergarten (K.G.)", programType: "Pre-Primary" },
+        { name: "LKG", programType: "Pre-Primary" },
+        { name: "UKG", programType: "Pre-Primary" },
         { name: "Class I", programType: "Primary" },
         { name: "Class II", programType: "Primary" },
         { name: "Class III", programType: "Primary" },
@@ -134,12 +135,12 @@ export const homeFaqs: FaqItem[] = [
   {
     question: "What classes does The Elisabeth Gauba School offer?",
     answer:
-      "The Elisabeth Gauba School (Shiv Niketan) is a pre-primary and primary school offering Nursery, Kindergarten (K.G.), and Class I through Class V.",
+      "The Elisabeth Gauba School (Shiv Niketan) is a pre-primary and primary school offering Nursery, LKG, UKG, and Class I through Class V.",
   },
   {
     question: "What is the age criteria for admission?",
     answer:
-      "Nursery: 3+ and below 4 years; K.G.: 4+ and below 5 years; Class I: 5+ and below 6 years, all as on 31st March of the admission year. Admission to higher classes depends on vacancies.",
+      "For 2027-28, as on 31st March 2027: Nursery 3+ and below 4 years; LKG 4+ and below 5 years; UKG 5+ and below 6 years; Class I 6+ and below 7 years. Admission to higher classes depends on vacancies.",
   },
   {
     question: "What are the school timings?",
@@ -182,7 +183,7 @@ export const admissionsFaqs: FaqItem[] = [
   {
     question: "What is the age criteria for admission?",
     answer:
-      "Nursery: 3+ and below 4 years; K.G.: 4+ and below 5 years; Class I: 5+ and below 6 years — all as on 31st March of the admission year. Admission to higher classes depends on vacancies.",
+      "For 2027-28, as on 31st March 2027: Nursery 3+ and below 4 years; LKG 4+ and below 5 years; UKG 5+ and below 6 years; Class I 6+ and below 7 years. Admission to higher classes depends on vacancies.",
   },
   {
     question: "Is admission to higher classes (above Class I) available?",
