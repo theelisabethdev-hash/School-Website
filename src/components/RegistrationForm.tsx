@@ -15,13 +15,41 @@ function getToday() {
   return `${dd}-${mm}-${yyyy}`;
 }
 
-function yearDiff(dob: string): number {
-  // dob is an ISO date string from <input type="date">
-  const dt1 = new Date(dob);
-  const dt2 = new Date("2026-03-31");
-  const diff = (dt2.getTime() - dt1.getTime()) / 1000 / 60 / 60 / 25 / 365.26;
-  return parseFloat(diff.toFixed(2));
+/**
+ * Age rules from the 2027-28 admissions poster, as on 31 March 2027:
+ * [min, max) completed years. A child who turns exactly 4 on 31 March is
+ * 4+ and so eligible for LKG, not Nursery (the school confirmed this).
+ */
+const AGE_ON = { year: 2027, monthDay: "03-31", label: "31 March 2027" };
+const CLASS_AGES: Record<string, { label: string; min: number; max: number }> = {
+  Nursery: { label: "Nursery", min: 3, max: 4 },
+  LKG: { label: "LKG", min: 4, max: 5 },
+  UKG: { label: "UKG", min: 5, max: 6 },
+  CLASS1: { label: "Class I", min: 6, max: 7 },
+  CLASS2: { label: "Class II", min: 7, max: 8 },
+  CLASS3: { label: "Class III", min: 8, max: 9 },
+  CLASS4: { label: "Class IV", min: 9, max: 10 },
+  CLASS5: { label: "Class V", min: 10, max: 11 },
+};
+
+/**
+ * Birth-date window for a class, compared as YYYY-MM-DD strings so there are
+ * no time zones or day lengths involved. A child is N+ on 31 March Y when born
+ * on or before 31 March (Y - N), and below M when born after 31 March (Y - M).
+ */
+function dobWindow(min: number, max: number) {
+  return {
+    after: `${AGE_ON.year - max}-${AGE_ON.monthDay}`, // exclusive
+    onOrBefore: `${AGE_ON.year - min}-${AGE_ON.monthDay}`,
+  };
 }
+
+const ddmmyyyy = (iso: string) => iso.split("-").reverse().join("-");
+const dayAfter = (iso: string) => {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+};
 
 /* ─── tiny shared sub-components ─── */
 
@@ -215,21 +243,15 @@ export default function RegistrationForm() {
       return false;
     }
 
-    // age validation
-    const age = yearDiff(dob);
-    const ageRules: Record<string, [number, number]> = {
-      Nursery: [3, 4],
-      KG: [4, 5],
-      CLASS1: [5, 6],
-      CLASS2: [6, 7],
-      CLASS3: [7, 8],
-      CLASS4: [8, 9],
-      CLASS5: [9, 10],
-    };
-    if (ageRules[regClass]) {
-      const [min, max] = ageRules[regClass];
-      if (age < min || age >= max) {
-        alert(`Age must be above ${min} years and below ${max} years for ${regClass}`);
+    // age validation (dob is YYYY-MM-DD from <input type="date">)
+    const rule = CLASS_AGES[regClass];
+    if (rule) {
+      const { after, onOrBefore } = dobWindow(rule.min, rule.max);
+      if (!(dob > after && dob <= onOrBefore)) {
+        alert(
+          `For ${rule.label}, the child must be ${rule.min}+ and below ${rule.max} years as on ${AGE_ON.label}, ` +
+            `i.e. born between ${ddmmyyyy(dayAfter(after))} and ${ddmmyyyy(onOrBefore)}.`,
+        );
         dobRef.current?.focus();
         return false;
       }
@@ -407,7 +429,8 @@ export default function RegistrationForm() {
                   >
                     <option value="" disabled>Select</option>
                     <option value="Nursery">Nursery</option>
-                    <option value="KG">KG</option>
+                    <option value="LKG">LKG</option>
+                    <option value="UKG">UKG</option>
                     <option value="CLASS1">CLASS 1</option>
                     <option value="CLASS2">CLASS 2</option>
                     <option value="CLASS3">CLASS 3</option>

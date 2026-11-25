@@ -93,7 +93,9 @@ export type Tab = "online" | "uploads";
 
 export const CLASSES: { key: string; label: string }[] = [
   { key: "Nursery", label: "Nursery" },
-  { key: "KG", label: "KG" },
+  { key: "LKG", label: "LKG" },
+  { key: "UKG", label: "UKG" },
+  { key: "KG", label: "KG" }, // registrations before 2027-28
   ...Array.from({ length: 12 }, (_, i) => ({ key: `CLASS${i + 1}`, label: `Class ${i + 1}` })),
 ];
 
